@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SleepingQueensTogether.Views.RegisterPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:SleepingQueensTogether.Models"
+    xmlns:vm="clr-namespace:SleepingQueensTogether.ViewModels"
+    Title="RegisterPage"
+    x:DataType="vm:RegisterPageVM"
+    IsBusy="{Binding IsBusy}">
+
+    <Grid
+        ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+        RowSpacing="20">
+        <Label
+            Grid.ColumnSpan="2"
+            FontAttributes="Bold"
+            Text="{x:Static m:Strings.RegisterTitleText}" />
+        <Border Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid ColumnDefinitions="Auto,*">
+                <Label
+                    HorizontalOptions="Start"
+                    Text="{x:Static m:Strings.EmailText}"
+                    VerticalOptions="Center" />
+                <Entry
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Placeholder="{x:Static m:Strings.EmailPlaceholderText}"
+                    Text="{Binding Email}"
+                    VerticalOptions="Center"
+                    WidthRequest="250" />
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid ColumnDefinitions="Auto,*">
+                <Label
+                    HorizontalOptions="Start"
+                    Text="{x:Static m:Strings.UsernameText}"
+                    VerticalOptions="Center" />
+                <Entry
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Placeholder="{x:Static m:Strings.UsernamePlaceholderText}"
+                    Text="{Binding Name}"
+                    VerticalOptions="Center"
+                    WidthRequest="250" />
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid ColumnDefinitions="Auto,*">
+                <Label
+                    HorizontalOptions="Start"
+                    Text="{x:Static m:Strings.PasswordText}"
+                    VerticalOptions="Center" />
+                <Entry
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    IsPassword="{Binding IsPassword}"
+                    Placeholder="{x:Static m:Strings.PasswordPlaceholderText}"
+                    Text="{Binding Password}"
+                    VerticalOptions="Center"
+                    WidthRequest="150" />
+                <Button
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    Command="{Binding ToggleIsPasswordCommand}"
+                    FontFamily="MaterialSymbolsOutlined"
+                    FontSize="24"
+                    HorizontalOptions="End"
+                    Style="{StaticResource IconButtonStyle}"
+                    Text="{Binding IsPassword, Converter={StaticResource passwordIconConvert}}" />
+
+            </Grid>
+        </Border>
+        <Button
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Command="{Binding RegisterCommand}"
+            Text="{x:Static m:Strings.RegisterButtonText}" />
+
+    </Grid>
+</ContentPage>

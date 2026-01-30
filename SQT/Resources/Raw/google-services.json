@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "705683475351",
+    "project_id": "sleepingqueenstogether",
+    "storage_bucket": "sleepingqueenstogether.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705683475351:android:603404268698233c8fd2d2",
+        "android_client_info": {
+          "package_name": "com.meitar.sleepingqueenstogether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "705683475351-n3bts7a4d5p8ou1ajojlto8catie1mpj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbA0iN_aDgDd7zKl6ybnSteELEbGGV2kI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "705683475351-n3bts7a4d5p8ou1ajojlto8catie1mpj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

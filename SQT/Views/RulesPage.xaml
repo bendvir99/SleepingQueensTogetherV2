@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SleepingQueensTogether.Views.RulesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="RulesPage" >
+    <Label Text="The main objective of the game is be the first player to reach 5 queens or 50 points. After you use a king card pick a queen from the table to awaken it and take it to yourself. Some queens are special: the rose queens grants you another free queen from the table while the dog queen and cat queen cant be held together by the same player, if you get one while you have the other, one of them will be put back to sleep. "/>
+</ContentPage>

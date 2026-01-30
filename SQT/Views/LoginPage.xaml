@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SleepingQueensTogether.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:SleepingQueensTogether.Models"
+    xmlns:vm="clr-namespace:SleepingQueensTogether.ViewModels"
+    Title="LoginPage"
+    x:DataType="vm:LoginPageVM"
+    IsBusy="{Binding IsBusy}">
+    <!--<Image
+            Grid.RowSpan="6"
+            Grid.ColumnSpan="2"
+            Aspect="AspectFill"
+            Source="sleepingqueens.jpg"
+            ZIndex="0" />-->
+
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+        <Label
+            Grid.ColumnSpan="2"
+            FontAttributes="Bold"
+            Text="{x:Static m:Strings.LoginTitleText}" />
+        <Border Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid ColumnDefinitions="Auto,*">
+                <Label
+                    HorizontalOptions="Start"
+                    Text="{x:Static m:Strings.EmailText}"
+                    VerticalOptions="Center" />
+                <Entry
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Placeholder="{x:Static m:Strings.EmailPlaceholderText}"
+                    Text="{Binding Email}"
+                    VerticalOptions="Center"
+                    WidthRequest="250" />
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid ColumnDefinitions="Auto,*">
+                <Label
+                    HorizontalOptions="Start"
+                    Text="{x:Static m:Strings.PasswordText}"
+                    VerticalOptions="Center" />
+                <Entry
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    IsPassword="{Binding IsPassword}"
+                    Placeholder="{x:Static m:Strings.PasswordPlaceholderText}"
+                    Text="{Binding Password}"
+                    VerticalOptions="Center"
+                    WidthRequest="150" />
+                <Button
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    Command="{Binding ToggleIsPasswordCommand}"
+                    FontFamily="MaterialSymbolsOutlined"
+                    FontSize="24"
+                    HorizontalOptions="End"
+                    Style="{StaticResource IconButtonStyle}"
+                    Text="{Binding IsPassword, Converter={StaticResource passwordIconConvert}}" />
+
+            </Grid>
+        </Border>
+        <Border
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            StrokeThickness="0">
+            <Grid ColumnDefinitions="Auto,*">
+                <CheckBox IsChecked="{Binding RememberMe}" />
+                <Label
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    Text="{x:Static m:Strings.RememberMe}"
+                    VerticalOptions="Center" />
+
+            </Grid>
+        </Border>
+        <Button
+            Grid.Row="4"
+            Grid.ColumnSpan="2"
+            Command="{Binding LoginCommand}"
+            Text="{x:Static m:Strings.LoginButtonText}" />
+        <Label
+            Grid.Row="5"
+            Grid.ColumnSpan="2"
+            Text="{x:Static m:Strings.ResetPassword}"
+            TextColor="DodgerBlue"
+            TextDecorations="Underline">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding NavigateToResetPasswordCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+        <Button
+            Grid.Row="6"
+            Grid.ColumnSpan="2"
+            BackgroundColor="White"
+            Command="{Binding BiometricLoginCommand}"
+            FontFamily="MaterialSymbolsOutlined"
+            FontSize="80"
+            Text="{Binding CanPressBiometric, Converter={StaticResource biometricIconConvert}}"
+            WidthRequest="100" />
+
+    </Grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ContentPage>

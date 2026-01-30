@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SleepingQueensTogether.Views.PlayPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:SleepingQueensTogether.Models"
+    xmlns:v="clr-namespace:SleepingQueensTogether.Views"
+    xmlns:vm="clr-namespace:SleepingQueensTogether.ViewModels"
+    x:DataType="vm:PlayPageVM"
+    IsBusy="{Binding IsBusy}" Title="PlayPage">
+    <VerticalStackLayout>
+        <Button
+            Grid.Column="1"
+            Margin="10"
+            Command="{Binding AddGameCommand}"
+            FontSize="Body"
+            HorizontalOptions="Fill"
+            Text="{x:Static m:Strings.AddGame}" />
+        <ListView ItemsSource="{Binding GamesList}" SelectedItem="{Binding SelectedItem}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="m:GameModel">
+                    <ViewCell>
+                        <Grid ColumnDefinitions="*,2.5*">
+                            <Label
+                                Grid.Column="0"
+                                Margin="20,0,0,0"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                HorizontalTextAlignment="Start"
+                                Text="{Binding HostName}"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Column="1"
+                                Margin="20,0,0,0"
+                                FontSize="15"
+                                Text="{Binding Created}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>
