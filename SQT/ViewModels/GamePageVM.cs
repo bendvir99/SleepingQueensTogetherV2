@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using Plugin.Maui.Biometric;
 using SleepingQueensTogether.Models;
 using SleepingQueensTogether.ModelsLogic;
 using System.Windows.Input;
