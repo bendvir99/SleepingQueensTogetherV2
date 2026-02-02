@@ -15,7 +15,7 @@ namespace SleepingQueensTogether.ModelsLogic
 
         internal Game()
         {
-            Console.WriteLine(Package.Count);
+            Console.WriteLine(DeckCards.Count);
             myCards = new CardsSet(full: false)
             {
                 SingleSelect = false
@@ -29,7 +29,7 @@ namespace SleepingQueensTogether.ModelsLogic
 
         internal Game(bool value)
         {
-            Console.WriteLine(Package.Count);
+            Console.WriteLine(DeckCards.Count);
             myCards = new CardsSet(full: false)
             {
                 SingleSelect = false
@@ -81,7 +81,7 @@ namespace SleepingQueensTogether.ModelsLogic
         {
             Dictionary<string, object> dict = new()
             {
-                { nameof(Package), Package },
+                { nameof(DeckCards), DeckCards },
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
@@ -111,7 +111,7 @@ namespace SleepingQueensTogether.ModelsLogic
                 IsFull = updatedGame.IsFull;
                 GuestName = updatedGame.GuestName;
                 IsHostTurn = updatedGame.IsHostTurn;
-                Package = updatedGame.Package;
+                DeckCards = updatedGame.DeckCards;
                 QueenTableCards = updatedGame.QueenTableCards;
                 GameChanged?.Invoke(this, EventArgs.Empty);
                 UpdateStatus();
@@ -138,7 +138,7 @@ namespace SleepingQueensTogether.ModelsLogic
         }
         public override Card TakeCard()
         {
-            Card card = Package.TakeCard();
+            Card card = DeckCards.TakeCard();
             if (!card.IsEmpty)
             {
                 card = myCards.Add(card);
@@ -153,6 +153,18 @@ namespace SleepingQueensTogether.ModelsLogic
         public void SelectCard(Card card)
         {
             myCards.SelectCard(card);
+        }
+
+        public List<Card> ThrowCard()
+        {
+            List<Card> card = myCards.ThrowCard();
+            if (card.Count >= 1)
+            {
+                OpenedCard = card[0];
+                //isSelectedMatch = false;
+
+            }
+            return card;
         }
     }
 }

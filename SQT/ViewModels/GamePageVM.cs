@@ -16,7 +16,7 @@ namespace SleepingQueensTogether.ViewModels
         public string StatusMessage => game.StatusMessage;
         public string OpponentName => game.OpponentName;
         public string Total => $"{Strings.TotalQueens}\n{Strings.TotalPoints}";
-        public bool GameStarted => game.Package.Count < 66;
+        public bool GameStarted => game.DeckCards.Count < 66;
         //public string[] CardImages => [.. game.Cards.Select(c => c.Image)];
         //public string[] QueenCardImages => [.. Enumerable.Range(0, 12).Select(i => GetCardImage(i))];
 
@@ -24,12 +24,14 @@ namespace SleepingQueensTogether.ViewModels
         public ICommand ChangeTurnCommand { get; }
         public ICommand StartGameCommand { get; }
         public ICommand SelectCardCommand { get; }
+        public ICommand ThrowSelectedCardCommand { get; }
         public GamePageVM(Game game, StackLayout stkMyCards, ScrollView scrlMyCards)
         {
             game.GameChanged += OnGameChanged;
             game.TimeLeftChanged += OnTimeLeftChanged;
             ChangeTurnCommand = new Command(ChangeTurn);
             StartGameCommand = new Command(StartGame);
+            ThrowSelectedCardCommand = new Command(ThrowSelectedCard);
             SelectCardCommand = new Command<SelectCardEventArgs>(SelectCard);
             this.game = game;
             this.stkMyCards = stkMyCards;
@@ -37,6 +39,20 @@ namespace SleepingQueensTogether.ViewModels
             if (!game.IsHostUser)
             {
                 game.UpdateGuestUser(OnComplete);
+            }
+        }
+
+        private void ThrowSelectedCard()
+        {
+            List<Card> card = game.ThrowCard();
+            if (card.Count >= 1)
+            {
+                for (int i = 0; i < card.Count; i++)
+                {
+                    stkMyCards.Children.RemoveAt(card[i].Index);
+                }
+                //OnPropertyChanged(nameof(OpendCardImageSource));
+                //OnPropertyChanged(nameof(IsSelectedMatch));
             }
         }
 
@@ -92,7 +108,7 @@ namespace SleepingQueensTogether.ViewModels
         }
         private bool CanStart()
         {
-            return !game.IsHostUser && game.Package.Count == 66;
+            return !game.IsHostUser && game.DeckCards.Count == 66;
         }
 
         private void ChangeTurn()
@@ -122,11 +138,11 @@ namespace SleepingQueensTogether.ViewModels
         {
             OnPropertyChanged(nameof(OpponentName));
             OnPropertyChanged(nameof(StatusMessage));
-            if (game.Package.Count == 61 && game.IsHostUser)
+            if (game.DeckCards.Count == 61 && game.IsHostUser)
             {
                 for (int i= 0; i < 5; i++)
                 {
-                    Console.WriteLine(game.Package.Count);
+                    Console.WriteLine(game.DeckCards.Count);
                     TakePackageCard();
                 }
                 game.UpdateFbInGame(OnCompleteUpdate);

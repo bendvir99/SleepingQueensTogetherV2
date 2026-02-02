@@ -6,6 +6,7 @@ namespace SleepingQueensTogether.Models
     public abstract class CardsSetModel
     {
         public List<Card> CardsDeck { get; set; } = [];
+        public List<Card> SelectedCards { get; set; } = [];
         public CardsSetModel() { CardsDeck = []; }
 
         public bool SingleSelect { protected get; set; }

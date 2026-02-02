@@ -38,8 +38,9 @@ namespace SleepingQueensTogether.Models
         public List<Card> QueenTableCards = new(12);
         public string HostName { get; set; } = string.Empty;
         public string GuestName { get; set; } = string.Empty;
-        public CardsSet Package { get; set; } = new CardsSet(full: true);
+        public CardsSet DeckCards { get; set; } = new CardsSet(full: true);
         public DateTime Created { get; set; }
+        public Card OpenedCard { get; set; } = new Card();
         public bool IsFull { get; set; }
         public bool IsHostTurn { get; set; } = false;
         public bool IsSelectedMatch { get; set; }

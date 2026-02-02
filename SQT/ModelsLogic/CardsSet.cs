@@ -10,13 +10,9 @@ namespace SleepingQueensTogether.ModelsLogic
     public class CardsSet : CardsSetModel
     {
         private readonly Random rnd;
-        private Card selectedCard;
-        private readonly Card emptyCard;
 
         public CardsSet(bool full) : base()
         {
-            emptyCard = new Card();
-            selectedCard = emptyCard;
             rnd = new Random();
             if (full)
                 FillPackage();
@@ -24,8 +20,6 @@ namespace SleepingQueensTogether.ModelsLogic
         }
         public CardsSet() : base()
         {
-            emptyCard = new Card();
-            selectedCard = emptyCard;
             rnd = new Random();
         }
 
@@ -92,47 +86,36 @@ namespace SleepingQueensTogether.ModelsLogic
 
         public void SelectCard(Card card)
         {
-            if (SingleSelect)
-                if (card.IsSelected)
-                {
-                    selectedCard = emptyCard;
-                    card?.ToggleSelected();
-                }
-                else
-                {
-                    selectedCard?.ToggleSelected();
-                    card.ToggleSelected();
-                    selectedCard = card;
-                }
-            else
+            if (card.IsSelected)
+            {
+                SelectedCards.Remove(card);
                 card?.ToggleSelected();
+            }
+            else
+            {
+                SelectedCards.Add(card);
+                card?.ToggleSelected();
+            }
         }
 
-        public Card ThrowCard(Card comparedCard)
+        public List<Card> ThrowCard()
         {
-            Card card = new();
-            if (IsMatch(comparedCard))
+            List<Card> card = [];
+            for (int i = 0; i < SelectedCards.Count; i++)
             {
-                card = Card.Copy(selectedCard);
-                if (!selectedCard.IsEmpty)
+                card.Add(Card.Copy(SelectedCards[i]));
+                if (!SelectedCards[i].IsEmpty)
                 {
-                    CardsDeck.Remove(selectedCard);
-                    for (int i = selectedCard.Index; i < CardsDeck.Count; i++)
+                    CardsDeck.Remove(SelectedCards[i]);
+                    for (int j = SelectedCards[i].Index; j < CardsDeck.Count; j++)
                     {
-                        CardsDeck[i].Index = i;
-                        CardsDeck[i].Margin = new Thickness(CardsDeck[i].Margin.Left - 30, 0, 0, 0);
+                        CardsDeck[j].Index = j;
+                        CardsDeck[j].Margin = new Thickness(0, 0, 0, 0);
                     }
-                    selectedCard = emptyCard;
                 }
             }
+            SelectedCards.Clear();
             return card;
-        }
-        public bool IsMatch(Card card)
-        {
-            bool match = false;
-            if (!selectedCard.IsEmpty)
-                match = card.Value == selectedCard.Value || card.Type == selectedCard.Type;
-            return match;
         }
     }
 }

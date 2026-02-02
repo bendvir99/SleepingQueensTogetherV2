@@ -43,6 +43,7 @@
         public const string TotalQueens = "Total Queens: 0";
         public const string TotalPoints = "Total Points: 0";
         public const string StartGame = "Start Game";
+        public const string ThrowCards = "Throw Cards";
         public const string Play = "Play";
         public const string MainTitle = "Sleeping Queens Together";
         public const string Rules = "Rules";
