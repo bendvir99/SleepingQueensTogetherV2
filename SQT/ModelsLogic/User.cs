@@ -91,7 +91,7 @@ namespace SleepingQueensTogether.ModelsLogic
                 if (task.Exception != null)
                 {
                     Exception ex = task.Exception.InnerException ?? task.Exception;
-
+                    Console.WriteLine(ex.Message);
                     ShowAlert(ex.Message);
                     OnAuthenticationComplete?.Invoke(this, false);
 

@@ -43,7 +43,7 @@ namespace SleepingQueensTogether.ModelsLogic
             UpdateStatus();
         }
 
-        private void OnMessageReceived(long timeLeft)
+        protected void OnMessageReceived(long timeLeft)
         {
             TimeLeft = timeLeft != Keys.FinishedSignal ? double.Round(timeLeft / 1000, 1).ToString() : Strings.TimeUp;
             TimeLeftChanged?.Invoke(this, EventArgs.Empty);
@@ -117,7 +117,10 @@ namespace SleepingQueensTogether.ModelsLogic
                 UpdateStatus();
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
-                    WeakReferenceMessenger.Default.Send(new AppMessage<TimerSettings>(timerSettings));
+                    if (TimeLeft == string.Empty && DeckCards.Count < 66)
+                    {
+                        WeakReferenceMessenger.Default.Send(new AppMessage<TimerSettings>(timerSettings));
+                    }
                 }
                 else
                 {
@@ -161,10 +164,28 @@ namespace SleepingQueensTogether.ModelsLogic
             if (card.Count >= 1)
             {
                 OpenedCard = card[0];
-                //isSelectedMatch = false;
 
             }
             return card;
+        }
+
+        public bool CanThrowCards()
+        {
+            bool canThrow = true;
+            if (_status.CurrentStatus != GameStatus.Statuses.Play)
+                canThrow = false;
+            else if (myCards.SelectedCards.Count == 0)
+                canThrow = false;
+            else if (myCards.SelectedCards.Count == 2)
+            {
+                if (myCards.SelectedCards[0].Type != Strings.number || myCards.SelectedCards[1].Type != Strings.number)
+                    canThrow = false;
+            }
+            else if (myCards.SelectedCards.Count > 2)
+            {
+
+            }
+            return canThrow;
         }
     }
 }

@@ -10,14 +10,22 @@ namespace SleepingQueensTogether.ViewModels
     {
         private readonly Game game;
         private readonly StackLayout stkMyCards;
-        private readonly ScrollView scrlMyCards;
         public string Timeleft => Strings.TimeLeft + game.TimeLeft;
         public string MyName => game.MyName;
         public string StatusMessage => game.StatusMessage;
         public string OpponentName => game.OpponentName;
         public string Total => $"{Strings.TotalQueens}\n{Strings.TotalPoints}";
+
+        public ImageSource OpenedCardImage
+        { 
+            get
+            {
+                CardView cardView = new();
+                cardView.SetCardSource(game.OpenedCard.Type, game.OpenedCard.Value);
+                return cardView.Source;
+            } 
+        }
         public bool GameStarted => game.DeckCards.Count < 66;
-        //public string[] CardImages => [.. game.Cards.Select(c => c.Image)];
         //public string[] QueenCardImages => [.. Enumerable.Range(0, 12).Select(i => GetCardImage(i))];
 
         public bool CanStartGame => CanStart();
@@ -25,7 +33,7 @@ namespace SleepingQueensTogether.ViewModels
         public ICommand StartGameCommand { get; }
         public ICommand SelectCardCommand { get; }
         public ICommand ThrowSelectedCardCommand { get; }
-        public GamePageVM(Game game, StackLayout stkMyCards, ScrollView scrlMyCards)
+        public GamePageVM(Game game, StackLayout stkMyCards)
         {
             game.GameChanged += OnGameChanged;
             game.TimeLeftChanged += OnTimeLeftChanged;
@@ -35,7 +43,6 @@ namespace SleepingQueensTogether.ViewModels
             SelectCardCommand = new Command<SelectCardEventArgs>(SelectCard);
             this.game = game;
             this.stkMyCards = stkMyCards;
-            this.scrlMyCards = scrlMyCards;
             if (!game.IsHostUser)
             {
                 game.UpdateGuestUser(OnComplete);
@@ -51,9 +58,9 @@ namespace SleepingQueensTogether.ViewModels
                 {
                     stkMyCards.Children.RemoveAt(card[i].Index);
                 }
-                //OnPropertyChanged(nameof(OpendCardImageSource));
                 //OnPropertyChanged(nameof(IsSelectedMatch));
             }
+            OnPropertyChanged(nameof(OpenedCardImage));
         }
 
         private void SelectCard(SelectCardEventArgs args)
@@ -89,14 +96,14 @@ namespace SleepingQueensTogether.ViewModels
             cardView.SetCardSource(card.Type, card.Value);
             cardView.Margin = card.Margin;
             cardView.Index = card.Index;
-            cardView.WidthRequest = 100;
+            cardView.WidthRequest = 70;
+            cardView.HeightRequest = 100;
             if (card != null)
             {
                 stkMyCards.Children.Add(cardView);
                 SelectCardEventArgs scea = new() { SelectedCard = card, SelectedCardView = cardView};
                 cardView.CommandParameter = scea;
                 cardView.Command = SelectCardCommand;
-                scrlMyCards.ScrollToAsync(stkMyCards, ScrollToPosition.End, true);
             }
             else
                 Toast.Make("No more cards", ToastDuration.Long, 20).Show();
@@ -110,7 +117,10 @@ namespace SleepingQueensTogether.ViewModels
         {
             return !game.IsHostUser && game.DeckCards.Count == 66;
         }
-
+        private bool CanThrowCards()
+        {
+            return game.CanThrowCards();
+        }
         private void ChangeTurn()
         {
             game.IsHostTurn = !game.IsHostTurn;
