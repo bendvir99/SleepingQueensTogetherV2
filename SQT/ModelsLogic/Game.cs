@@ -15,7 +15,6 @@ namespace SleepingQueensTogether.ModelsLogic
 
         internal Game()
         {
-            Console.WriteLine(DeckCards.Count);
             myCards = new CardsSet(full: false)
             {
                 SingleSelect = false
@@ -29,7 +28,6 @@ namespace SleepingQueensTogether.ModelsLogic
 
         internal Game(bool value)
         {
-            Console.WriteLine(DeckCards.Count);
             myCards = new CardsSet(full: false)
             {
                 SingleSelect = false
@@ -82,6 +80,7 @@ namespace SleepingQueensTogether.ModelsLogic
             Dictionary<string, object> dict = new()
             {
                 { nameof(DeckCards), DeckCards },
+                { nameof(OpenedCard), OpenedCard }
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
@@ -112,6 +111,7 @@ namespace SleepingQueensTogether.ModelsLogic
                 GuestName = updatedGame.GuestName;
                 IsHostTurn = updatedGame.IsHostTurn;
                 DeckCards = updatedGame.DeckCards;
+                OpenedCard = updatedGame.OpenedCard;
                 QueenTableCards = updatedGame.QueenTableCards;
                 GameChanged?.Invoke(this, EventArgs.Empty);
                 UpdateStatus();
@@ -155,7 +155,8 @@ namespace SleepingQueensTogether.ModelsLogic
 
         public void SelectCard(Card card)
         {
-            myCards.SelectCard(card);
+            if (_status.CurrentStatus == GameStatus.Statuses.Play)
+                myCards.SelectCard(card);
         }
 
         public List<Card> ThrowCard()
@@ -164,7 +165,6 @@ namespace SleepingQueensTogether.ModelsLogic
             if (card.Count >= 1)
             {
                 OpenedCard = card[0];
-
             }
             return card;
         }
@@ -180,12 +180,139 @@ namespace SleepingQueensTogether.ModelsLogic
             {
                 if (myCards.SelectedCards[0].Type != Strings.number || myCards.SelectedCards[1].Type != Strings.number)
                     canThrow = false;
+                if (myCards.SelectedCards[0].Value != myCards.SelectedCards[1].Value)
+                    canThrow = false;
             }
-            else if (myCards.SelectedCards.Count > 2)
+            else if (myCards.SelectedCards.Count == 3)
             {
+                if (myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number && myCards.SelectedCards[2].Type == Strings.number)
+                    if (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value && myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value)
+                        return canThrow;
 
+
+                if (TryGetEquation(myCards.SelectedCards, out string? equation))
+                {
+                    Console.WriteLine(equation);
+                }
+                else
+                    canThrow = false;
+            }
+            else if (myCards.SelectedCards.Count == 4)
+            {
+                if (myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number && myCards.SelectedCards[2].Type == Strings.number && myCards.SelectedCards[3].Type == Strings.number)
+                    if (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value && myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value && myCards.SelectedCards[2].Value == myCards.SelectedCards[3].Value)
+                        return canThrow;
+
+
+                if (TryGetEquation(myCards.SelectedCards, out string? equation))
+                {
+                    Console.WriteLine(equation);
+                }
+                else
+                    canThrow = false;
+            }
+            else if (myCards.SelectedCards.Count == 5)
+            {
+                if (myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number && myCards.SelectedCards[2].Type == Strings.number && myCards.SelectedCards[3].Type == Strings.number && myCards.SelectedCards[4].Type == Strings.number)
+                    if (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value && myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value && myCards.SelectedCards[2].Value == myCards.SelectedCards[3].Value && myCards.SelectedCards[3].Value == myCards.SelectedCards[4].Value)
+                        return canThrow;
+
+
+                if (TryGetEquation(myCards.SelectedCards, out string? equation))
+                {
+                    Console.WriteLine(equation);
+                }
+                else
+                    canThrow = false;
             }
             return canThrow;
+        }
+        public static bool TryGetEquation(List<Card> cards, out string? equation)
+        {
+            equation = null;
+
+            // If any card is negative, immediately reject
+            foreach (Card card in cards)
+            {
+                if (card.Value < 0)
+                    return false;
+            }
+
+
+            // Try each card as the result
+            for (int i = 0; i < cards.Count; i++)
+            {
+                int result = cards[i].Value;
+
+                // Collect the other cards
+                List<int> numbers = [];
+                for (int j = 0; j < cards.Count; j++)
+                {
+                    if (j != i)
+                        numbers.Add(cards[j].Value);
+                }
+
+                // Start checking combinations
+                if (CheckSequence(numbers, 1, numbers[0], numbers[0].ToString(), result, out string expr))
+                {
+                    equation = expr + " = " + result;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        private static bool CheckSequence(List<int> numbers, int index, int current, string expr, int target, out string finalExpr)
+        {
+            finalExpr = "";
+
+            // Base case: all numbers used
+            if (index >= numbers.Count)
+            {
+                if (current == target)
+                {
+                    finalExpr = expr;
+                    return true;
+                }
+                return false;
+            }
+
+            int next = numbers[index];
+
+            // Try addition
+            if (CheckSequence(numbers, index + 1, current + next, expr + " + " + next, target, out string addExpr))
+            {
+                finalExpr = addExpr;
+                return true;
+            }
+
+            // Try subtraction
+            if (CheckSequence(numbers, index + 1, current - next, expr + " - " + next, target, out string subExpr))
+            {
+                finalExpr = subExpr;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void InitializeQueens()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                bool found = false;
+                int number = 0;
+                while (!found)
+                {
+                    found = true;
+                    number = random.Next(0, 12);
+                    for (int j = 0; j < QueenTableCards.Count; j++)
+                    {
+                        if (QueenTableCards[j].Value == number) found = false;
+                    }
+                }
+                QueenTableCards.Add(new Card("Queen", number));
+            }
         }
     }
 }

@@ -34,27 +34,27 @@ namespace SleepingQueensTogether.ModelsLogic
             }
             for (int i = 0; i < 7; i++)
             {
-                CardsDeck.Add(new Card(Strings.king, i + 1));
+                CardsDeck.Add(new Card(Strings.king, -(i + 1)));
             }
             for (int i = 0; i < 4; i++)
             {
-                CardsDeck.Add(new Card(Strings.knight, i + 1));
+                CardsDeck.Add(new Card(Strings.knight, -(i + 1)));
             }
             for (int i = 0; i < 3; i++)
             {
-                CardsDeck.Add(new Card(Strings.dragon, 1));
+                CardsDeck.Add(new Card(Strings.dragon, -1));
             }
             for (int i = 0; i < 5; i++)
             {
-                CardsDeck.Add(new Card(Strings.joker, 1));
+                CardsDeck.Add(new Card(Strings.joker, -1));
             }
             for (int i = 0; i < 4; i++)
             {
-                CardsDeck.Add(new Card(Strings.sleepingpotion, 1));
+                CardsDeck.Add(new Card(Strings.sleepingpotion, -1));
             }
             for (int i = 0; i < 3; i++)
             {
-                CardsDeck.Add(new Card(Strings.wand, 1));
+                CardsDeck.Add(new Card(Strings.wand, -1));
             }
         }
 

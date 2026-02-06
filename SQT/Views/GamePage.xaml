@@ -106,7 +106,7 @@
                     Margin="0,0,0,0"
                     HeightRequest="50"
                     WidthRequest="140"
-                    IsVisible="{Binding GameStarted}"
+                    IsVisible="{Binding OpenedCardVisible}"
                     Source="{Binding OpenedCardImage}"/>
                 <!--<ImageButton
                     Grid.Row="1"

@@ -17,12 +17,12 @@
         {
             Source = type == Strings.queen ? cardsImage[0][value] :
                 type == Strings.number ? cardsImage[1][value - 1] :
-                type == Strings.king ? cardsImage[2][value - 1] :
-                type == Strings.knight ? cardsImage[2][value + 6] :
-                type == Strings.dragon ? cardsImage[2][value + 10] :
-                type == Strings.joker ? cardsImage[2][value + 11] :
-                type == Strings.sleepingpotion ? cardsImage[2][value + 12] :
-                type == Strings.wand ? cardsImage[2][value + 13] : Strings.orangecard;
+                type == Strings.king ? cardsImage[2][-value - 1] :
+                type == Strings.knight ? cardsImage[2][-value + 6] :
+                type == Strings.dragon ? cardsImage[2][-value + 10] :
+                type == Strings.joker ? cardsImage[2][-value + 11] :
+                type == Strings.sleepingpotion ? cardsImage[2][-value + 12] :
+                type == Strings.wand ? cardsImage[2][-value + 13] : Strings.orangecard;
         }
     }
 }

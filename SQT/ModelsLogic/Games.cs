@@ -57,7 +57,6 @@ namespace SleepingQueensTogether.ModelsLogic
             foreach (IDocumentSnapshot ds in qs.Documents)
             {
                 Game? game = ds.ToObject<Game>();
-                Console.WriteLine(game?.DeckCards.Count);
                 if (game != null)
                 {
                     game.Id = ds.Id;
