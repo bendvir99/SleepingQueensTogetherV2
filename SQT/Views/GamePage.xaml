@@ -22,48 +22,59 @@
                     FontSize="20"
                     HeightRequest="30"
                     Text="{Binding OpponentName}" />
-                <Label
+                <Frame
                     Grid.Column="2"
                     Grid.ColumnSpan="6"
-                    FontAttributes="Bold"
-                    FontSize="10"
                     HeightRequest="30"
                     HorizontalOptions="End"
-                    Text="{Binding Timeleft}" />
+                    TranslationX="-10"
+                    TranslationY="-5"
+                    WidthRequest="100">
+                    <Label
+                        BackgroundColor="Transparent"
+                        FontAttributes="Bold"
+                        FontSize="10"
+                        HeightRequest="30"
+                        Text="{Binding Timeleft}"
+                        TranslationX="7"
+                        VerticalTextAlignment="Center"
+                        WidthRequest="100" />
+                </Frame>
+
                 <StackLayout
                     Grid.Row="2"
-                    Margin="17,0,0,0"
                     IsVisible="{Binding GameStarted}"
                     Orientation="Horizontal"
-                    Spacing="5">
+                    Spacing="5"
+                    TranslationX="17">
                     <Image
                         Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
-                        Source="orangecard.png"
+                        Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
                         Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
-                        Source="orangecard.png"
+                        Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
                         Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
-                        Source="orangecard.png"
+                        Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
                         Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
-                        Source="orangecard.png"
+                        Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
                         Aspect="AspectFit"
                         HeightRequest="100"
-                        Source="orangecard.png"
+                        Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                 </StackLayout>
             </Grid>
@@ -74,121 +85,153 @@
                 <Button
                     Grid.Row="1"
                     Grid.Column="3"
-                    Margin="0,0,0,0"
                     Command="{Binding ThrowSelectedCardCommand}"
                     FontSize="18"
                     HeightRequest="50"
                     IsVisible="{Binding GameStarted}"
                     Text="{x:Static m:Strings.ThrowCards}"
+                    TranslationY="-50"
                     WidthRequest="140" />
                 <Button
                     Grid.Row="1"
                     Grid.Column="3"
-                    Margin="0,0,0,0"
                     Command="{Binding StartGameCommand}"
                     FontSize="18"
                     HeightRequest="50"
                     IsVisible="{Binding CanStartGame}"
                     Text="{x:Static m:Strings.StartGame}"
-                    WidthRequest="140" />
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="3"
-                    Margin="0,0,0,0"
-                    Command="{Binding ChangeTurnCommand}"
-                    FontSize="18"
-                    HeightRequest="50"
-                    Text="{x:Static m:Strings.StartGame}"
+                    TranslationY="-50"
                     WidthRequest="140" />
                 <Image
-                    Grid.Row="3"
+                    Grid.Row="2"
                     Grid.Column="3"
-                    Margin="0,0,0,0"
-                    HeightRequest="50"
-                    WidthRequest="140"
+                    HeightRequest="70"
+                    HorizontalOptions="End"
                     IsVisible="{Binding OpenedCardVisible}"
-                    Source="{Binding OpenedCardImage}"/>
-                <!--<ImageButton
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="10,40,0,0"
-                    Aspect="AspectFit"
+                    Source="{Binding OpenedCardImage}"
+                    TranslationY="30"
+                    WidthRequest="140" />
+                <Grid
+                    Grid.Row="2"
+                    Grid.Column="4"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[0]}" />
+                    IsVisible="True"
+                    TranslationX="-10"
+                    TranslationY="30"
+                    WidthRequest="140">
+                    <Image
+                        Aspect="AspectFit"
+                        Source="{x:Static m:Strings.orangecard}"
+                        TranslationY="6" />
+                    <Image
+                        Aspect="AspectFit"
+                        Source="{x:Static m:Strings.orangecard}"
+                        TranslationY="3" />
+                    <ImageButton
+                        Aspect="AspectFit"
+                        Command="{Binding EndTurnCommand}"
+                        Source="{x:Static m:Strings.orangecard}"
+                        WidthRequest="50" />
+                </Grid>
                 <ImageButton
                     Grid.Row="1"
-                    Margin="10,40,0,0"
+                    Grid.Column="1"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[1]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[0]}"
+                    TranslationX="10"
+                    TranslationY="20" />
+                <ImageButton
+                    Grid.Row="1"
+                    Aspect="AspectFit"
+                    HeightRequest="70"
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[1]}"
+                    TranslationX="10"
+                    TranslationY="20" />
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="6"
-                    Margin="0,40,10,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[6]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[6]}"
+                    TranslationY="20" />
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="5"
-                    Margin="0,40,10,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[7]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[7]}"
+                    TranslationY="20" />
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="1"
-                    Margin="10,60,0,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[2]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[2]}"
+                    TranslationX="10"
+                    TranslationY="30" />
                 <ImageButton
                     Grid.Row="2"
-                    Margin="10,60,0,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[3]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[3]}"
+                    TranslationX="10"
+                    TranslationY="30" />
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="6"
-                    Margin="0,60,10,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[8]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[8]}"
+                    TranslationY="30" />
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="5"
-                    Margin="0,60,10,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[9]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[9]}"
+                    TranslationY="30" />
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="1"
-                    Margin="10,80,0,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[4]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[4]}"
+                    TranslationX="10"
+                    TranslationY="40" />
                 <ImageButton
                     Grid.Row="3"
-                    Margin="10,80,0,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[5]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[5]}"
+                    TranslationX="10"
+                    TranslationY="40" />
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="6"
-                    Margin="0,80,10,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[10]}" />
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[10]}"
+                    TranslationY="40" />
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="5"
-                    Margin="0,80,10,0"
                     Aspect="AspectFit"
                     HeightRequest="70"
-                    Source="{Binding QueenCardImages[11]}" />-->
+                    IsVisible="{Binding GameStarted}"
+                    Source="{Binding QueenCardImages[11]}"
+                    TranslationY="40" />
 
             </Grid>
             <StackLayout

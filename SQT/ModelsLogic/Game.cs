@@ -9,7 +9,7 @@ namespace SleepingQueensTogether.ModelsLogic
 {
     public class Game : GameModel
     {
-        private readonly CardsSet myCards;
+        public readonly CardsSet myCards;
         public override string OpponentName => IsHostUser ? GuestName : HostName;
         protected override GameStatus Status => _status;
 
@@ -80,7 +80,9 @@ namespace SleepingQueensTogether.ModelsLogic
             Dictionary<string, object> dict = new()
             {
                 { nameof(DeckCards), DeckCards },
-                { nameof(OpenedCard), OpenedCard }
+                { nameof(OpenedCard), OpenedCard },
+                { nameof(QueenTableCards), QueenTableCards },
+                { nameof(IsHostTurn), IsHostTurn   }
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
@@ -167,6 +169,11 @@ namespace SleepingQueensTogether.ModelsLogic
                 OpenedCard = card[0];
             }
             return card;
+        }
+
+        public bool CanEndTurn()
+        {
+            return _status.CurrentStatus == GameStatus.Statuses.Play && myCards.CardsDeck.Count < 5 && DeckCards.CardsDeck.Count < 66;
         }
 
         public bool CanThrowCards()
@@ -266,7 +273,6 @@ namespace SleepingQueensTogether.ModelsLogic
         {
             finalExpr = "";
 
-            // Base case: all numbers used
             if (index >= numbers.Count)
             {
                 if (current == target)
@@ -279,14 +285,12 @@ namespace SleepingQueensTogether.ModelsLogic
 
             int next = numbers[index];
 
-            // Try addition
             if (CheckSequence(numbers, index + 1, current + next, expr + " + " + next, target, out string addExpr))
             {
                 finalExpr = addExpr;
                 return true;
             }
 
-            // Try subtraction
             if (CheckSequence(numbers, index + 1, current - next, expr + " - " + next, target, out string subExpr))
             {
                 finalExpr = subExpr;
@@ -311,8 +315,14 @@ namespace SleepingQueensTogether.ModelsLogic
                         if (QueenTableCards[j].Value == number) found = false;
                     }
                 }
-                QueenTableCards.Add(new Card("Queen", number));
+                QueenTableCards.Add(new Card(Strings.queen, number));
             }
+        }
+
+        public void ChangeTurn()
+        {
+            IsHostTurn = !IsHostTurn;
+            UpdateStatus();
         }
     }
 }

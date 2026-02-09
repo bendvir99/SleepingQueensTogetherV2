@@ -141,7 +141,7 @@ namespace SleepingQueensTogether.ModelsLogic
                 if (task.Exception != null)
                 {
                     Exception ex = task.Exception.InnerException ?? task.Exception;
-                    Console.WriteLine(ex);
+                    Console.WriteLine(ex.Message);
                 }
                 General.ToastMake(Strings.ResetPasswordFailed);
             }

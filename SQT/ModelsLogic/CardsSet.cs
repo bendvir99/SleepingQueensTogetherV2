@@ -58,12 +58,12 @@ namespace SleepingQueensTogether.ModelsLogic
             }
         }
 
-        public void Reset(bool full)
-        {
-            //cards.Clear();
-            //if (full)
-            //    FillPakage();
-        }
+        //public void Reset(bool full)
+        //{
+        //    //cards.Clear();
+        //    //if (full)
+        //    //    FillPakage();
+        //}
 
         public Card Add(Card card)
         {

@@ -17,12 +17,12 @@ namespace SleepingQueensTogether.ViewModels
         public string Total => $"{Strings.TotalQueens}\n{Strings.TotalPoints}";
         public bool GameStarted => game.DeckCards.Count < 66;
         public bool OpenedCardVisible => game.OpenedCard.Type != Strings.empty;
-        //public string[] QueenCardImages => [.. Enumerable.Range(0, 12).Select(i => GetCardImage(i))];
+        public ImageSource[] QueenCardImages => [.. Enumerable.Range(0, 12).Select(i => GetCardImage(i))];
         public bool CanStartGame => CanStart();
-        public ICommand ChangeTurnCommand { get; }
         public ICommand StartGameCommand { get; }
         public ICommand SelectCardCommand { get; }
         public ICommand ThrowSelectedCardCommand { get; }
+        public ICommand EndTurnCommand { get; }
 
         public ImageSource OpenedCardImage
         {
@@ -37,8 +37,8 @@ namespace SleepingQueensTogether.ViewModels
         {
             game.GameChanged += OnGameChanged;
             game.TimeLeftChanged += OnTimeLeftChanged;
-            ChangeTurnCommand = new Command(ChangeTurn);
             StartGameCommand = new Command(StartGame);
+            EndTurnCommand = new Command(EndTurn, CanEndTurn);
             ThrowSelectedCardCommand = new Command(ThrowSelectedCard, CanThrowCards);
             SelectCardCommand = new Command<SelectCardEventArgs>(SelectCard);
             this.game = game;
@@ -47,6 +47,22 @@ namespace SleepingQueensTogether.ViewModels
             {
                 game.UpdateGuestUser(OnComplete);
             }
+        }
+
+        private bool CanEndTurn()
+        {
+            return game.CanEndTurn();
+        }
+
+        private void EndTurn()
+        {
+            for (int i = 0; i < (5 - game.myCards.CardsDeck.Count);)
+            {
+                TakePackageCard();
+            }
+            game.ChangeTurn();
+            game.UpdateFbInGame(OnCompleteUpdate);
+            OnPropertyChanged(nameof(game.IsHostTurn));
         }
 
         private void ThrowSelectedCard()
@@ -58,7 +74,8 @@ namespace SleepingQueensTogether.ViewModels
                 {
                     stkMyCards.Children.RemoveAt(card[i].Index);
                 }
-               (ThrowSelectedCardCommand as Command)?.ChangeCanExecute();
+                (ThrowSelectedCardCommand as Command)?.ChangeCanExecute();
+                (EndTurnCommand as Command)?.ChangeCanExecute();
             }
             game.UpdateFbInGame(OnCompleteUpdate);
             OnPropertyChanged(nameof(OpenedCardImage));
@@ -90,6 +107,7 @@ namespace SleepingQueensTogether.ViewModels
             game.UpdateFbInGame(OnCompleteUpdate);
             OnPropertyChanged(nameof(CanStartGame));
             OnPropertyChanged(nameof(GameStarted));
+            OnPropertyChanged(nameof(QueenCardImages));
         }
 
         private void TakePackageCard()
@@ -108,8 +126,6 @@ namespace SleepingQueensTogether.ViewModels
                 cardView.CommandParameter = scea;
                 cardView.Command = SelectCardCommand;
             }
-            else
-                Toast.Make("No more cards", ToastDuration.Long, 20).Show();
         }
         private void OnCompleteUpdate(Task task)
         {
@@ -124,35 +140,31 @@ namespace SleepingQueensTogether.ViewModels
         {
             return game.CanThrowCards();
         }
-        private void ChangeTurn()
+        private ImageSource GetCardImage(int index)
         {
-            game.IsHostTurn = !game.IsHostTurn;
-            Dictionary<string, object> dict = new()
-
+            if (game.QueenTableCards.Count == 0)
             {
-                { nameof(game.IsHostTurn), game.IsHostTurn }
-            };
-            FbData fbd = new();
-            fbd.UpdateFields(Keys.GamesCollection, game.Id, dict, OnComplete);
-            OnPropertyChanged(nameof(StatusMessage));
+                return Strings.greencard;
+            }
+            if (game.QueenTableCards[index].IsAwaken)
+            {
+                CardView cardView = new();
+                cardView.SetCardSource(game.QueenTableCards[index].Type, game.QueenTableCards[index].Value);
+                return cardView.Source;
+            }
+            else
+            {
+                return Strings.greencard;
+            }
         }
-        //private string GetCardImage(int index)
-        //{
-        //    if (game.QueenTableCards.Count == 0)
-        //        return Strings.greencard;
-        //    if (!game.QueenTableCards[index].IsAwaken)
-        //    {
-        //        return game.QueenTableCards[index].ImageCard;
-        //    }
-        //    else
-        //        return game.QueenTableCards[index].BackImage;
-        //}
         private void OnGameChanged(object? sender, EventArgs e)
         {
             OnPropertyChanged(nameof(OpponentName));
             OnPropertyChanged(nameof(StatusMessage));
             OnPropertyChanged(nameof(OpenedCardImage));
             OnPropertyChanged(nameof(OpenedCardVisible));
+            OnPropertyChanged(nameof(QueenCardImages));
+            OnPropertyChanged(nameof(game.IsHostTurn));
             if (game.DeckCards.Count == 61 && game.IsHostUser)
             {
                 for (int i= 0; i < 5; i++)
