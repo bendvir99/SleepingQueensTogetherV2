@@ -39,14 +39,12 @@ namespace SleepingQueensTogether.ViewModels
             game.TimeLeftChanged += OnTimeLeftChanged;
             StartGameCommand = new Command(StartGame);
             EndTurnCommand = new Command(EndTurn, CanEndTurn);
-            ThrowSelectedCardCommand = new Command(ThrowSelectedCard, CanThrowCards);
+            ThrowSelectedCardCommand = new Command(ThrowSelectedCard);
             SelectCardCommand = new Command<SelectCardEventArgs>(SelectCard);
             this.game = game;
             this.stkMyCards = stkMyCards;
             if (!game.IsHostUser)
-            {
                 game.UpdateGuestUser(OnComplete);
-            }
         }
 
         private bool CanEndTurn()
@@ -57,29 +55,48 @@ namespace SleepingQueensTogether.ViewModels
         private void EndTurn()
         {
             for (int i = 0; i < (5 - game.myCards.CardsDeck.Count);)
-            {
                 TakePackageCard();
-            }
             game.ChangeTurn();
             game.UpdateFbInGame(OnCompleteUpdate);
             OnPropertyChanged(nameof(game.IsHostTurn));
+            (EndTurnCommand as Command)?.ChangeCanExecute();
         }
 
         private void ThrowSelectedCard()
         {
-            List<Card> card = game.ThrowCard();
-            if (card.Count >= 1)
+            if (game.myCards.CardsDeck.Count == 5 && game.StatusMessage == Strings.PlayMessage)
             {
-                for (int i = 0; i < card.Count; i++)
+                List<Card> card = game.ThrowCard(out string? equation);
+                if (card.Count >= 1)
                 {
-                    stkMyCards.Children.RemoveAt(card[i].Index);
+                    for (int i = 0; i < card.Count; i++)
+                        stkMyCards.Children.RemoveAt(card[i].Index);
+                    (EndTurnCommand as Command)?.ChangeCanExecute();
+                    if (equation != null)
+                    {
+                        Toast.Make(equation, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                        game.Equation = equation;
+                    }
                 }
-                (ThrowSelectedCardCommand as Command)?.ChangeCanExecute();
-                (EndTurnCommand as Command)?.ChangeCanExecute();
+                else
+                {
+                    for (int i = 0; i < stkMyCards.Children.Count; i++)
+                    {
+                        if (stkMyCards.Children[i].Margin != new Thickness(0))
+                            if (stkMyCards.Children[i] is ImageButton imagebutton && imagebutton.Command != null)
+                                imagebutton.Command.Execute(imagebutton.CommandParameter);
+                    }
+                    game.ChangeTurn();
+                    game.IllegalMove = true;
+                    Toast.Make(Strings.IllegalMove, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                }
+                game.UpdateFbInGame(OnCompleteUpdate);
+                OnPropertyChanged(nameof(OpenedCardImage));
+                OnPropertyChanged(nameof(game.IsHostTurn));
+                OnPropertyChanged(nameof(OpenedCardVisible));
+                game.IllegalMove = false;
+                game.Equation = string.Empty;
             }
-            game.UpdateFbInGame(OnCompleteUpdate);
-            OnPropertyChanged(nameof(OpenedCardImage));
-            OnPropertyChanged(nameof(OpenedCardVisible));
         }
 
         private void SelectCard(SelectCardEventArgs args)
@@ -100,9 +117,7 @@ namespace SleepingQueensTogether.ViewModels
         private void StartGame()
         {
             for (int i = 0; i < 5; i++)
-            {
                 TakePackageCard();
-            }
             game.InitializeQueens();
             game.UpdateFbInGame(OnCompleteUpdate);
             OnPropertyChanged(nameof(CanStartGame));
@@ -136,16 +151,10 @@ namespace SleepingQueensTogether.ViewModels
         {
             return !game.IsHostUser && game.DeckCards.Count == 66;
         }
-        private bool CanThrowCards()
-        {
-            return game.CanThrowCards();
-        }
         private ImageSource GetCardImage(int index)
         {
             if (game.QueenTableCards.Count == 0)
-            {
                 return Strings.greencard;
-            }
             if (game.QueenTableCards[index].IsAwaken)
             {
                 CardView cardView = new();
@@ -153,9 +162,7 @@ namespace SleepingQueensTogether.ViewModels
                 return cardView.Source;
             }
             else
-            {
                 return Strings.greencard;
-            }
         }
         private void OnGameChanged(object? sender, EventArgs e)
         {
@@ -171,6 +178,18 @@ namespace SleepingQueensTogether.ViewModels
                     TakePackageCard();
                 game.UpdateFbInGame(OnCompleteUpdate);
                 OnPropertyChanged(nameof(GameStarted));
+            }
+            if (game.IllegalMove && game.StatusMessage == Strings.PlayMessage)
+            {
+                Toast.Make(Strings.IllegalMove, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                game.IllegalMove = false;
+            }
+            if (game.Equation != string.Empty && game.StatusMessage == Strings.PlayMessage)
+                game.Equation = string.Empty;
+            if (game.Equation != string.Empty && game.StatusMessage == Strings.WaitMessage)
+            {
+                Toast.Make(game.Equation, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                game.Equation = string.Empty;
             }
         }
 

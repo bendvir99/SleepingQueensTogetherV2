@@ -63,5 +63,10 @@
         public const string unlock = "Unlock your account";
         public const string confirmIdentity = "Confirm your identity to login";
         public const string BiometricLogin = "Biometric Login";
+        public const string IllegalMove = "Illegal Move";
+        public const string Double = "Double ";
+        public const string Triple = "Triple ";
+        public const string Quadruple = "Quadruple ";
+        public const string Quintuple = "Quintuple ";
     }
 }

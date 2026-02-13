@@ -4,6 +4,7 @@ using Java.Lang;
 using Plugin.CloudFirestore;
 using Plugin.Maui.Biometric;
 using SleepingQueensTogether.Models;
+using Xamarin.Grpc;
 
 namespace SleepingQueensTogether.ModelsLogic
 {
@@ -43,7 +44,19 @@ namespace SleepingQueensTogether.ModelsLogic
 
         protected void OnMessageReceived(long timeLeft)
         {
-            TimeLeft = timeLeft != Keys.FinishedSignal ? double.Round(timeLeft / 1000, 1).ToString() : Strings.TimeUp;
+            if (timeLeft == Keys.FinishedSignal)
+            { 
+                if (_status.CurrentStatus == GameStatus.Statuses.Play)
+                {
+                    ChangeTurn();
+                    UpdateFbInGame(OnCompleteUpdate);
+                    Toast.Make(Strings.TimeUp, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                }
+            }
+            else
+            {
+                TimeLeft = double.Round(timeLeft / 1000, 1).ToString();
+            }
             TimeLeftChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -82,7 +95,9 @@ namespace SleepingQueensTogether.ModelsLogic
                 { nameof(DeckCards), DeckCards },
                 { nameof(OpenedCard), OpenedCard },
                 { nameof(QueenTableCards), QueenTableCards },
-                { nameof(IsHostTurn), IsHostTurn   }
+                { nameof(IsHostTurn), IsHostTurn },
+                { nameof(IllegalMove), IllegalMove },
+                { nameof(Equation), Equation }
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
@@ -103,7 +118,11 @@ namespace SleepingQueensTogether.ModelsLogic
             if (task.IsCompletedSuccessfully)
                 GameDeleted?.Invoke(this, EventArgs.Empty);
         }
-
+        private void OnCompleteUpdate(Task task)
+        {
+            if (!task.IsCompletedSuccessfully)
+                Toast.Make(Strings.UpdateErr, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+        }
         protected override void OnChange(IDocumentSnapshot? snapshot, System.Exception? error)
         {
             Game? updatedGame = snapshot?.ToObject<Game>();
@@ -115,8 +134,10 @@ namespace SleepingQueensTogether.ModelsLogic
                 DeckCards = updatedGame.DeckCards;
                 OpenedCard = updatedGame.OpenedCard;
                 QueenTableCards = updatedGame.QueenTableCards;
-                GameChanged?.Invoke(this, EventArgs.Empty);
+                IllegalMove = updatedGame.IllegalMove;
+                Equation = updatedGame.Equation;
                 UpdateStatus();
+                GameChanged?.Invoke(this, EventArgs.Empty);
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
                     if (TimeLeft == string.Empty && DeckCards.Count < 66)
@@ -157,18 +178,33 @@ namespace SleepingQueensTogether.ModelsLogic
 
         public void SelectCard(Card card)
         {
-            if (_status.CurrentStatus == GameStatus.Statuses.Play)
+            if (_status.CurrentStatus == GameStatus.Statuses.Play && myCards.CardsDeck.Count == 5)
                 myCards.SelectCard(card);
         }
 
-        public List<Card> ThrowCard()
+        public List<Card> ThrowCard(out string? equation)
         {
-            List<Card> card = myCards.ThrowCard();
-            if (card.Count >= 1)
+            equation = null;
+            if (CanThrowCards(out string? equationFinal, out int final))
             {
-                OpenedCard = card[0];
+                if (final != -1)
+                {
+                    for (int i = 0; i < myCards.SelectedCards.Count; i++)
+                    {
+                        if (myCards.SelectedCards[i].Value == final)
+                        {
+                            OpenedCard = myCards.SelectedCards[i];
+                            equation = equationFinal;
+                        }
+                    }
+                }
+                else
+                    OpenedCard = myCards.SelectedCards[0];
+
+                List<Card> card = myCards.ThrowCard();
+                return card;
             }
-            return card;
+            return [];
         }
 
         public bool CanEndTurn()
@@ -176,8 +212,10 @@ namespace SleepingQueensTogether.ModelsLogic
             return _status.CurrentStatus == GameStatus.Statuses.Play && myCards.CardsDeck.Count < 5 && DeckCards.CardsDeck.Count < 66;
         }
 
-        public bool CanThrowCards()
+        private bool CanThrowCards(out string? equationFinal, out int finalNumber)
         {
+            finalNumber = -1;
+            equationFinal = null;
             bool canThrow = true;
             if (_status.CurrentStatus != GameStatus.Statuses.Play)
                 canThrow = false;
@@ -185,60 +223,80 @@ namespace SleepingQueensTogether.ModelsLogic
                 canThrow = false;
             else if (myCards.SelectedCards.Count == 2)
             {
-                if (myCards.SelectedCards[0].Type != Strings.number || myCards.SelectedCards[1].Type != Strings.number)
-                    canThrow = false;
-                if (myCards.SelectedCards[0].Value != myCards.SelectedCards[1].Value)
+                if ((myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number) && (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value))
+                {
+                    equationFinal = Strings.Double + myCards.SelectedCards[0].Value;
+                    finalNumber = myCards.SelectedCards[0].Value;
+                    return canThrow;
+                }
+                else
                     canThrow = false;
             }
             else if (myCards.SelectedCards.Count == 3)
             {
-                if (myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number && myCards.SelectedCards[2].Type == Strings.number)
-                    if (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value && myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value)
-                        return canThrow;
-
-
-                if (TryGetEquation(myCards.SelectedCards, out string? equation))
+                if ((myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number) && (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value) && (myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value))
                 {
-                    Console.WriteLine(equation);
+                    equationFinal = Strings.Triple + myCards.SelectedCards[0].Value;
+                    finalNumber = myCards.SelectedCards[0].Value;
+                    return canThrow;
+                }
+
+
+                if (TryGetEquation(myCards.SelectedCards, out string? equation, out int final))
+                {
+                    equationFinal = equation;
+                    finalNumber = final;
+                    return canThrow;
                 }
                 else
                     canThrow = false;
             }
             else if (myCards.SelectedCards.Count == 4)
             {
-                if (myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number && myCards.SelectedCards[2].Type == Strings.number && myCards.SelectedCards[3].Type == Strings.number)
-                    if (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value && myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value && myCards.SelectedCards[2].Value == myCards.SelectedCards[3].Value)
-                        return canThrow;
-
-
-                if (TryGetEquation(myCards.SelectedCards, out string? equation))
+                if ((myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number) && (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value) && (myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value) && (myCards.SelectedCards[2].Value == myCards.SelectedCards[3].Value))
                 {
-                    Console.WriteLine(equation);
+                    equationFinal = Strings.Quadruple + myCards.SelectedCards[0].Value;
+                    finalNumber = myCards.SelectedCards[0].Value;
+                    return canThrow;
+                }
+
+
+
+                if (TryGetEquation(myCards.SelectedCards, out string? equation, out int final))
+                {
+                    equationFinal = equation;
+                    finalNumber = final;
+                    return canThrow;
                 }
                 else
                     canThrow = false;
             }
             else if (myCards.SelectedCards.Count == 5)
             {
-                if (myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number && myCards.SelectedCards[2].Type == Strings.number && myCards.SelectedCards[3].Type == Strings.number && myCards.SelectedCards[4].Type == Strings.number)
-                    if (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value && myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value && myCards.SelectedCards[2].Value == myCards.SelectedCards[3].Value && myCards.SelectedCards[3].Value == myCards.SelectedCards[4].Value)
-                        return canThrow;
-
-
-                if (TryGetEquation(myCards.SelectedCards, out string? equation))
+                if ((myCards.SelectedCards[0].Type == Strings.number && myCards.SelectedCards[1].Type == Strings.number) && (myCards.SelectedCards[0].Value == myCards.SelectedCards[1].Value) && (myCards.SelectedCards[1].Value == myCards.SelectedCards[2].Value) && (myCards.SelectedCards[2].Value == myCards.SelectedCards[3].Value) && (myCards.SelectedCards[3].Value == myCards.SelectedCards[4].Value))
                 {
-                    Console.WriteLine(equation);
+                    equationFinal = Strings.Quintuple + myCards.SelectedCards[0].Value;
+                    finalNumber = myCards.SelectedCards[0].Value;
+                    return canThrow;
+                }
+
+
+                if (TryGetEquation(myCards.SelectedCards, out string? equation, out int final))
+                {
+                    equationFinal = equation;
+                    finalNumber = final;
+                    return canThrow;
                 }
                 else
                     canThrow = false;
             }
             return canThrow;
         }
-        public static bool TryGetEquation(List<Card> cards, out string? equation)
+        public static bool TryGetEquation(List<Card> cards, out string? equation, out int final)
         {
+            final = -1;
             equation = null;
 
-            // If any card is negative, immediately reject
             foreach (Card card in cards)
             {
                 if (card.Value < 0)
@@ -246,12 +304,10 @@ namespace SleepingQueensTogether.ModelsLogic
             }
 
 
-            // Try each card as the result
             for (int i = 0; i < cards.Count; i++)
             {
                 int result = cards[i].Value;
 
-                // Collect the other cards
                 List<int> numbers = [];
                 for (int j = 0; j < cards.Count; j++)
                 {
@@ -259,10 +315,10 @@ namespace SleepingQueensTogether.ModelsLogic
                         numbers.Add(cards[j].Value);
                 }
 
-                // Start checking combinations
                 if (CheckSequence(numbers, 1, numbers[0], numbers[0].ToString(), result, out string expr))
                 {
                     equation = expr + " = " + result;
+                    final = result;
                     return true;
                 }
             }

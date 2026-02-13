@@ -31,6 +31,7 @@ namespace SleepingQueensTogether.Models
         public abstract string OpponentName { get; }
         [Ignored]
         public string TimeLeft { get; protected set; } = string.Empty;
+        public string Equation { get; set; } = string.Empty;
         public List<Card> QueenTableCards = new(12);
         public string HostName { get; set; } = string.Empty;
         public string GuestName { get; set; } = string.Empty;
@@ -39,6 +40,7 @@ namespace SleepingQueensTogether.Models
         public Card OpenedCard { get; set; } = new Card();
         public bool IsFull { get; set; }
         public bool IsHostTurn { get; set; } = false;
+        public bool IllegalMove { get; set; } = false;
         public bool IsSelectedMatch { get; set; }
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void RemoveSnapshotListener();

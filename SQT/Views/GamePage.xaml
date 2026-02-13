@@ -115,7 +115,7 @@
                     Grid.Row="2"
                     Grid.Column="4"
                     HeightRequest="70"
-                    IsVisible="True"
+                    IsVisible="{Binding GameStarted}"
                     TranslationX="-10"
                     TranslationY="30"
                     WidthRequest="140">
