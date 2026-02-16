@@ -93,18 +93,18 @@ namespace SleepingQueensTogether.ViewModels
         private void OnAuthComplete(object? sender, bool success)
         {
             if (success && Application.Current != null)
-            {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     Application.Current.MainPage = new AppShell();
                 });
-            }
             else
             {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     (LoginCommand as Command)?.ChangeCanExecute();
                 });
+                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged(nameof(Password));
                 OnPropertyChanged(nameof(IsBusy));
             }
         }

@@ -90,15 +90,15 @@ namespace SleepingQueensTogether.ModelsLogic
             {
                 if (task.Exception != null)
                 {
+                    Name = string.Empty;
+                    Email = string.Empty;
+                    Password = string.Empty;
                     Exception ex = task.Exception.InnerException ?? task.Exception;
                     Console.WriteLine(ex.Message);
                     ShowAlert(ex.Message);
                     OnAuthenticationComplete?.Invoke(this, false);
 
                 }
-                Name = string.Empty;
-                Email = string.Empty;
-                Password = string.Empty;
             }
         }
         protected override void OnCompleteLogin(Task task)
@@ -113,10 +113,10 @@ namespace SleepingQueensTogether.ModelsLogic
             else
             {
                 General.ToastMake(Strings.LoginFailedError);
-                OnAuthenticationComplete?.Invoke(this, false);
                 Name = string.Empty;
                 Email = string.Empty;
                 Password = string.Empty;
+                OnAuthenticationComplete?.Invoke(this, false);
 
             }
         }
@@ -124,9 +124,7 @@ namespace SleepingQueensTogether.ModelsLogic
         {
             IsBusy = false;
             if (task.IsCompletedSuccessfully)
-            {
                 OnAuthenticationComplete?.Invoke(this, true);
-            }
             else
             {
                 General.ToastMake(Strings.LoginFailedError);

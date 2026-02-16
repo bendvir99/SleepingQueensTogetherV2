@@ -81,11 +81,9 @@ namespace SleepingQueensTogether.ViewModels
                 else
                 {
                     for (int i = 0; i < stkMyCards.Children.Count; i++)
-                    {
                         if (stkMyCards.Children[i].Margin != new Thickness(0))
                             if (stkMyCards.Children[i] is ImageButton imagebutton && imagebutton.Command != null)
                                 imagebutton.Command.Execute(imagebutton.CommandParameter);
-                    }
                     game.ChangeTurn();
                     game.IllegalMove = true;
                     Toast.Make(Strings.IllegalMove, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();

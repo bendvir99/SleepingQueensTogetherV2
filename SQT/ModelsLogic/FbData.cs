@@ -38,21 +38,13 @@ namespace SleepingQueensTogether.ModelsLogic
         public override string GetErrorMessage(string message)
         {
             if (message.Contains(Strings.InvalidEmail))
-            {
                 return Strings.RegisterFailedInvalidEmail;
-            }
             else if (message.Contains(Strings.EmailExists))
-            {
                 return (Strings.RegisterFailedEmailExists);
-            }
             else if (message.Contains(Strings.WeakPassword))
-            {
                 return (Strings.RegisterFailedWeakPassword);
-            }
             else
-            {
                 return (Strings.RegisterUnknownError);
-            }
         }
 
         public override string SetDocument(object obj, string collectonName, string id, Action<System.Threading.Tasks.Task> OnComplete)

@@ -22,7 +22,6 @@ namespace SleepingQueensTogether.Models
         public abstract IListenerRegistration AddSnapshotListener(string collectonName, Plugin.CloudFirestore.QuerySnapshotHandler OnChange);
         public abstract IListenerRegistration AddSnapshotListener(string collectonName, string id, Plugin.CloudFirestore.DocumentSnapshotHandler OnChange);
 
-        //public abstract void SignInWithGoogleAsync(Action<System.Threading.Tasks.Task> OnComplete);
         public FbDataModel()
         {
             FirebaseAuthConfig fac = new()

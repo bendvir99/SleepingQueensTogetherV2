@@ -20,12 +20,10 @@ namespace SleepingQueensTogether.ViewModels
         private void NavigateToLoginPage()
         {
             if (Application.Current != null)
-            {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     Application.Current.MainPage = new LoginPage();
                 });
-            }
         }
 
         private void ResetPassword()

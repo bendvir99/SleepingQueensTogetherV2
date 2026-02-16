@@ -54,9 +54,7 @@ namespace SleepingQueensTogether.ModelsLogic
                 }
             }
             else
-            {
                 TimeLeft = double.Round(timeLeft / 1000, 1).ToString();
-            }
             TimeLeftChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -141,9 +139,7 @@ namespace SleepingQueensTogether.ModelsLogic
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
                     if (TimeLeft == string.Empty && DeckCards.Count < 66)
-                    {
                         WeakReferenceMessenger.Default.Send(new AppMessage<TimerSettings>(timerSettings));
-                    }
                 }
                 else
                 {
@@ -153,22 +149,17 @@ namespace SleepingQueensTogether.ModelsLogic
                 }
             }
             else
-            {
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     Shell.Current.Navigation.PopAsync();
                     Toast.Make(Strings.GameCanceled, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
                 });
-
-            }
         }
         public override Card TakeCard()
         {
             Card card = DeckCards.TakeCard();
             if (!card.IsEmpty)
-            {
                 card = myCards.Add(card);
-            }
             return card;
         }
         public override void DeleteDocument(Action<Task> OnComplete)
@@ -190,13 +181,11 @@ namespace SleepingQueensTogether.ModelsLogic
                 if (final != -1)
                 {
                     for (int i = 0; i < myCards.SelectedCards.Count; i++)
-                    {
                         if (myCards.SelectedCards[i].Value == final)
                         {
                             OpenedCard = myCards.SelectedCards[i];
                             equation = equationFinal;
                         }
-                    }
                 }
                 else
                     OpenedCard = myCards.SelectedCards[0];
@@ -298,10 +287,8 @@ namespace SleepingQueensTogether.ModelsLogic
             equation = null;
 
             foreach (Card card in cards)
-            {
                 if (card.Value < 0)
                     return false;
-            }
 
 
             for (int i = 0; i < cards.Count; i++)
@@ -310,10 +297,8 @@ namespace SleepingQueensTogether.ModelsLogic
 
                 List<int> numbers = [];
                 for (int j = 0; j < cards.Count; j++)
-                {
                     if (j != i)
                         numbers.Add(cards[j].Value);
-                }
 
                 if (CheckSequence(numbers, 1, numbers[0], numbers[0].ToString(), result, out string expr))
                 {
@@ -367,9 +352,8 @@ namespace SleepingQueensTogether.ModelsLogic
                     found = true;
                     number = random.Next(0, 12);
                     for (int j = 0; j < QueenTableCards.Count; j++)
-                    {
-                        if (QueenTableCards[j].Value == number) found = false;
-                    }
+                        if (QueenTableCards[j].Value == number)
+                            found = false;
                 }
                 QueenTableCards.Add(new Card(Strings.queen, number));
             }

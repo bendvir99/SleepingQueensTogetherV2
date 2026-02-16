@@ -26,12 +26,7 @@ namespace SleepingQueensTogether.ModelsLogic
         {
             Card newCard = new();
             if (!card.IsEmpty)
-            {
-                newCard = new Card(card.Type, card.Value)
-                {
-                    Index = card.Index
-                };
-            }
+                newCard = new Card(card.Type, card.Value) { Index = card.Index };
             return newCard;
         }
     }

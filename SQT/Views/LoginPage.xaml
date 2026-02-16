@@ -8,12 +8,6 @@
     Title="LoginPage"
     x:DataType="vm:LoginPageVM"
     IsBusy="{Binding IsBusy}">
-    <!--<Image
-            Grid.RowSpan="6"
-            Grid.ColumnSpan="2"
-            Aspect="AspectFill"
-            Source="sleepingqueens.jpg"
-            ZIndex="0" />-->
 
     <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
         <Label

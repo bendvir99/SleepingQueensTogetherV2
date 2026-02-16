@@ -26,36 +26,20 @@ namespace SleepingQueensTogether.ModelsLogic
         public override void FillPackage()
         {
             for (int i = 0; i < 4; i++)
-            {
                 for (int j = 0; j < 10; j++)
-                {
                     CardsDeck.Add(new Card(Strings.number, j + 1));
-                }
-            }
             for (int i = 0; i < 7; i++)
-            {
                 CardsDeck.Add(new Card(Strings.king, -(i + 1)));
-            }
             for (int i = 0; i < 4; i++)
-            {
                 CardsDeck.Add(new Card(Strings.knight, -(i + 1)));
-            }
             for (int i = 0; i < 3; i++)
-            {
                 CardsDeck.Add(new Card(Strings.dragon, -1));
-            }
             for (int i = 0; i < 5; i++)
-            {
                 CardsDeck.Add(new Card(Strings.joker, -1));
-            }
             for (int i = 0; i < 4; i++)
-            {
                 CardsDeck.Add(new Card(Strings.sleepingpotion, -1));
-            }
             for (int i = 0; i < 3; i++)
-            {
                 CardsDeck.Add(new Card(Strings.wand, -1));
-            }
         }
 
         //public void Reset(bool full)
