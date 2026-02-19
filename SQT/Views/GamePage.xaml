@@ -87,20 +87,20 @@
                     Grid.Column="3"
                     Command="{Binding ThrowSelectedCardCommand}"
                     FontSize="18"
-                    HeightRequest="50"
+                    HeightRequest="40"
                     IsVisible="{Binding GameStarted}"
                     Text="{x:Static m:Strings.ThrowCards}"
-                    TranslationY="-50"
+                    TranslationY="50"
                     WidthRequest="140" />
                 <Button
                     Grid.Row="1"
                     Grid.Column="3"
                     Command="{Binding StartGameCommand}"
                     FontSize="18"
-                    HeightRequest="50"
+                    HeightRequest="40"
                     IsVisible="{Binding CanStartGame}"
                     Text="{x:Static m:Strings.StartGame}"
-                    TranslationY="-50"
+                    TranslationY="50"
                     WidthRequest="140" />
                 <Image
                     Grid.Row="2"
@@ -109,15 +109,16 @@
                     HorizontalOptions="End"
                     IsVisible="{Binding OpenedCardVisible}"
                     Source="{Binding OpenedCardImage}"
-                    TranslationY="30"
-                    WidthRequest="140" />
+                    TranslationX="-40"
+                    TranslationY="70"
+                    WidthRequest="50" />
                 <Grid
                     Grid.Row="2"
                     Grid.Column="4"
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     TranslationX="-10"
-                    TranslationY="30"
+                    TranslationY="70"
                     WidthRequest="140">
                     <Image
                         Aspect="AspectFit"
@@ -141,7 +142,7 @@
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[0]}"
                     TranslationX="10"
-                    TranslationY="20" />
+                    TranslationY="60" />
                 <ImageButton
                     Grid.Row="1"
                     Aspect="AspectFit"
@@ -149,7 +150,7 @@
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[1]}"
                     TranslationX="10"
-                    TranslationY="20" />
+                    TranslationY="60" />
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="6"
@@ -157,7 +158,7 @@
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[6]}"
-                    TranslationY="20" />
+                    TranslationY="60" />
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="5"
@@ -165,7 +166,7 @@
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[7]}"
-                    TranslationY="20" />
+                    TranslationY="60" />
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="1"
@@ -174,7 +175,7 @@
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[2]}"
                     TranslationX="10"
-                    TranslationY="30" />
+                    TranslationY="70" />
                 <ImageButton
                     Grid.Row="2"
                     Aspect="AspectFit"
@@ -182,7 +183,7 @@
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[3]}"
                     TranslationX="10"
-                    TranslationY="30" />
+                    TranslationY="70" />
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="6"
@@ -190,7 +191,7 @@
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[8]}"
-                    TranslationY="30" />
+                    TranslationY="70" />
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="5"
@@ -198,7 +199,7 @@
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[9]}"
-                    TranslationY="30" />
+                    TranslationY="70" />
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="1"
@@ -207,7 +208,7 @@
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[4]}"
                     TranslationX="10"
-                    TranslationY="40" />
+                    TranslationY="80" />
                 <ImageButton
                     Grid.Row="3"
                     Aspect="AspectFit"
@@ -215,7 +216,7 @@
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[5]}"
                     TranslationX="10"
-                    TranslationY="40" />
+                    TranslationY="80" />
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="6"
@@ -223,7 +224,7 @@
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[10]}"
-                    TranslationY="40" />
+                    TranslationY="80" />
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="5"
@@ -231,7 +232,7 @@
                     HeightRequest="70"
                     IsVisible="{Binding GameStarted}"
                     Source="{Binding QueenCardImages[11]}"
-                    TranslationY="40" />
+                    TranslationY="80" />
 
             </Grid>
             <StackLayout
