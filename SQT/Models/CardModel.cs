@@ -11,6 +11,7 @@ namespace SleepingQueensTogether.Models
         public int Value { get; set; } = 0;
         public bool IsUsed { get; set; } = false;
         public bool IsAwaken { get; set; } = false;
+        public int QueenValue { get; set; } = 0;
         [Ignored]
         public int Index { get; set; }
         [Ignored]

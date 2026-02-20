@@ -95,7 +95,8 @@ namespace SleepingQueensTogether.ModelsLogic
                 { nameof(QueenTableCards), QueenTableCards },
                 { nameof(IsHostTurn), IsHostTurn },
                 { nameof(IllegalMove), IllegalMove },
-                { nameof(Equation), Equation }
+                { nameof(Equation), Equation },
+                { nameof(QueenCards), QueenCards}
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
@@ -135,9 +136,12 @@ namespace SleepingQueensTogether.ModelsLogic
                 IllegalMove = updatedGame.IllegalMove;
                 Equation = updatedGame.Equation;
                 UpdateStatus();
-                GameChanged?.Invoke(this, EventArgs.Empty);
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
+                    if (myCards.CardsDeck.Count == 5)
+                    {
+                        OpponentQueenCards = updatedGame.QueenCards;
+                    }
                     if (TimeLeft == string.Empty && DeckCards.Count < 66)
                         WeakReferenceMessenger.Default.Send(new AppMessage<TimerSettings>(timerSettings));
                 }
@@ -147,6 +151,7 @@ namespace SleepingQueensTogether.ModelsLogic
                     TimeLeft = string.Empty;
                     TimeLeftChanged?.Invoke(this, EventArgs.Empty);
                 }
+                GameChanged?.Invoke(this, EventArgs.Empty);
             }
             else
                 MainThread.InvokeOnMainThreadAsync(() =>
@@ -363,6 +368,23 @@ namespace SleepingQueensTogether.ModelsLogic
         {
             IsHostTurn = !IsHostTurn;
             UpdateStatus();
+        }
+
+        public void UseCardPower(string type)
+        {
+            if (type == Strings.king)
+            {
+                CanPickQueen = true;
+            }
+        }
+
+        public void TakeQueenCard(int index)
+        {
+            QueenCards.Add(QueenTableCards[index]);
+            QueenTableCards[index].IsAwaken = true;
+            QueensCount++;
+            QueenPoints += QueenTableCards[index].QueenValue;
+            CanPickQueen = false;
         }
     }
 }

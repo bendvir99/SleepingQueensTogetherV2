@@ -31,6 +31,15 @@ namespace SleepingQueensTogether.Models
         public abstract string OpponentName { get; }
         [Ignored]
         public string TimeLeft { get; protected set; } = string.Empty;
+        [Ignored]
+        public bool CanPickQueen { get; set; } = false;
+        [Ignored]
+        public List<Card> OpponentQueenCards = new(5);
+        [Ignored]
+        public int QueensCount { get; set; } = 0;
+        [Ignored]
+        public int QueenPoints { get; set; } = 0;
+        public List<Card> QueenCards = new(5);
         public string Equation { get; set; } = string.Empty;
         public List<Card> QueenTableCards = new(12);
         public string HostName { get; set; } = string.Empty;
@@ -47,7 +56,6 @@ namespace SleepingQueensTogether.Models
         public abstract void AddSnapshotListener();
         public abstract void DeleteDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void UpdateGuestUser(Action<Task> OnComplete);
-        //public abstract void InitializeCards();
         public abstract Card TakeCard();
         public abstract void UpdateFbInGame(Action<Task> OnComplete);
         protected abstract void UpdateStatus();
