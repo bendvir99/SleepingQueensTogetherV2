@@ -10,6 +10,7 @@ namespace SleepingQueensTogether.Platforms.Android
         public override void OnFinish()
         {
             WeakReferenceMessenger.Default.Send(new AppMessage<long>(Keys.FinishedSignal));
+
         }
 
         public override void OnTick(long millisUntilFinished)

@@ -135,13 +135,10 @@ namespace SleepingQueensTogether.ModelsLogic
                 QueenTableCards = updatedGame.QueenTableCards;
                 IllegalMove = updatedGame.IllegalMove;
                 Equation = updatedGame.Equation;
+                if (_status.CurrentStatus == GameStatus.Statuses.Wait) OpponentQueenCards = updatedGame.QueenCards;
                 UpdateStatus();
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
-                    if (myCards.CardsDeck.Count == 5)
-                    {
-                        OpponentQueenCards = updatedGame.QueenCards;
-                    }
                     if (TimeLeft == string.Empty && DeckCards.Count < 66)
                         WeakReferenceMessenger.Default.Send(new AppMessage<TimerSettings>(timerSettings));
                 }
@@ -169,7 +166,9 @@ namespace SleepingQueensTogether.ModelsLogic
         }
         public override void DeleteDocument(Action<Task> OnComplete)
         {
+            WeakReferenceMessenger.Default.Unregister<AppMessage<long>>(this);
             fbd.DeleteDocument(Keys.GamesCollection, Id, OnComplete);
+
         }
 
         public void SelectCard(Card card)
@@ -367,7 +366,6 @@ namespace SleepingQueensTogether.ModelsLogic
         public void ChangeTurn()
         {
             IsHostTurn = !IsHostTurn;
-            UpdateStatus();
         }
 
         public void UseCardPower(string type)

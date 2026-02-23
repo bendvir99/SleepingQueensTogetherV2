@@ -43,7 +43,7 @@ namespace SleepingQueensTogether.ModelsLogic
                         QueenValue = 10;
                         break;
                     case 8:
-                        QueenValue = 15;
+                        QueenValue = 5;
                         break;
                     case 9:
                         QueenValue = 5;

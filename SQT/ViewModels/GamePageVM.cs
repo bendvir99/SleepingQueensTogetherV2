@@ -58,9 +58,11 @@ namespace SleepingQueensTogether.ViewModels
             if (game.CanPickQueen && !game.QueenTableCards[i].IsAwaken)
             {
                 game.TakeQueenCard(i);
+                game.UpdateFbInGame(OnCompleteUpdate);
                 OnPropertyChanged(nameof(QueenTableCardImages));
                 OnPropertyChanged(nameof(QueenCardImages));
                 OnPropertyChanged(nameof(Total));
+
             }
         }
 
