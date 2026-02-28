@@ -18,9 +18,9 @@ namespace SleepingQueensTogether.Models
         [Ignored]
         public EventHandler? GameChanged;
         [Ignored]
-        public EventHandler? GameDeleted;
-        [Ignored]
         public EventHandler? TimeLeftChanged;
+        [Ignored]
+        public EventHandler? TimesUp;
         [Ignored]
         public string Id { get; set; } = string.Empty;
         [Ignored]
@@ -36,11 +36,13 @@ namespace SleepingQueensTogether.Models
         [Ignored]
         public List<Card> OpponentQueenCards = new(5);
         [Ignored]
+        public List<Card> OpponentCards = new(5);
+        [Ignored]
         public int QueensCount { get; set; } = 0;
         [Ignored]
         public int QueenPoints { get; set; } = 0;
         public List<Card> QueenCards = new(5);
-        public string Equation { get; set; } = string.Empty;
+        public string UpdateMessage { get; set; } = string.Empty;
         public List<Card> QueenTableCards = new(12);
         public string HostName { get; set; } = string.Empty;
         public string GuestName { get; set; } = string.Empty;
@@ -50,6 +52,11 @@ namespace SleepingQueensTogether.Models
         public bool IsFull { get; set; }
         public bool IsHostTurn { get; set; } = false;
         public bool IllegalMove { get; set; } = false;
+        public bool KnightPlaced { get; set; } = false;
+        public bool PotionPlaced { get; set; } = false;
+        public bool CanClickQueen { get; set; } = false;
+        public bool RemoveQueen { get; set; } = false;
+        public int RemoveQueenIndex { get; set; } = -1;
         public bool IsSelectedMatch { get; set; }
         public abstract void SetDocument(Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void RemoveSnapshotListener();

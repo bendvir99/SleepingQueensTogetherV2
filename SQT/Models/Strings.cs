@@ -35,7 +35,7 @@
         public const string AddGame = "Add Game";
         public const string JoinGameErr = "Error joining game";
         public const string UpdateErr = "Error updating information";
-        public const string GameCanceled = "Game Canceled";
+        public const string DeleteErr = "Delete Error";
         public const string WaitMessage = "Please wait";
         public const string PlayMessage = "Play please";
         public const string ResetPasswordTitle = "Reset Your Password";
@@ -68,5 +68,12 @@
         public const string Triple = "Triple ";
         public const string Quadruple = "Quadruple ";
         public const string Quintuple = "Quintuple ";
+        public const string JokerOpponent = "Opponent has been chosen to pick a queen";
+        public const string JokerYou = "You have been chosen to pick a queen";
+        public const string GameCanceled = "Game Canceled";
+        public const string OpponentWon = "Opponent won with ";
+        public const string YouWon = "You won with ";
+        public const string Queens = " queens";
+        public const string Points = " points";
     }
 }

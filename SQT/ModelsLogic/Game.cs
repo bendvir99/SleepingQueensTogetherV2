@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿using AndroidX.Core.Util;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.Messaging;
 using Java.Lang;
 using Plugin.CloudFirestore;
@@ -48,9 +49,15 @@ namespace SleepingQueensTogether.ModelsLogic
             { 
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
+                    CanPickQueen = false;
+                    if (!KnightPlaced && !PotionPlaced) CanClickQueen = false;
+                    KnightPlaced = false;
+                    PotionPlaced = false;
+                    UpdateMessage = Strings.TimeUp;
                     ChangeTurn();
                     UpdateFbInGame(OnCompleteUpdate);
                     Toast.Make(Strings.TimeUp, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                    TimesUp?.Invoke(this, EventArgs.Empty);
                 }
             }
             else
@@ -95,8 +102,14 @@ namespace SleepingQueensTogether.ModelsLogic
                 { nameof(QueenTableCards), QueenTableCards },
                 { nameof(IsHostTurn), IsHostTurn },
                 { nameof(IllegalMove), IllegalMove },
-                { nameof(Equation), Equation },
-                { nameof(QueenCards), QueenCards}
+                { nameof(UpdateMessage), UpdateMessage },
+                { nameof(QueenCards), QueenCards},
+                { nameof(myCards), myCards },
+                { nameof(KnightPlaced), KnightPlaced },
+                { nameof(PotionPlaced), PotionPlaced },
+                { nameof(CanClickQueen), CanClickQueen },
+                { nameof(RemoveQueen), RemoveQueen },
+                { nameof(RemoveQueenIndex), RemoveQueenIndex }
             };
             fbd.UpdateFields(Keys.GamesCollection, Id, dict, OnComplete);
         }
@@ -114,8 +127,8 @@ namespace SleepingQueensTogether.ModelsLogic
 
         protected override void OnComplete(Task task)
         {
-            if (task.IsCompletedSuccessfully)
-                GameDeleted?.Invoke(this, EventArgs.Empty);
+            if (!task.IsCompletedSuccessfully)
+                Toast.Make(Strings.DeleteErr, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
         }
         private void OnCompleteUpdate(Task task)
         {
@@ -134,8 +147,42 @@ namespace SleepingQueensTogether.ModelsLogic
                 OpenedCard = updatedGame.OpenedCard;
                 QueenTableCards = updatedGame.QueenTableCards;
                 IllegalMove = updatedGame.IllegalMove;
-                Equation = updatedGame.Equation;
-                if (_status.CurrentStatus == GameStatus.Statuses.Wait) OpponentQueenCards = updatedGame.QueenCards;
+                UpdateMessage = updatedGame.UpdateMessage;
+                KnightPlaced = updatedGame.KnightPlaced;
+                PotionPlaced = updatedGame.PotionPlaced;
+                CanClickQueen = updatedGame.CanClickQueen;
+                if (_status.CurrentStatus == GameStatus.Statuses.Wait)
+                {
+                    RemoveQueen = updatedGame.RemoveQueen;
+                    RemoveQueenIndex = updatedGame.RemoveQueenIndex;
+                    if (UpdateMessage != string.Empty)
+                    {
+                        Toast.Make(UpdateMessage, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                        if (UpdateMessage == Strings.JokerYou)
+                            CanPickQueen = true;
+                    }
+                    if (RemoveQueen)
+                    {
+                        QueenPoints -= QueenCards[RemoveQueenIndex].QueenValue;
+                        QueensCount--;
+                        QueenCards.Remove(QueenCards[RemoveQueenIndex]);
+                    }
+                    if (IllegalMove) Toast.Make(Strings.IllegalMove, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                    UpdateMessage = string.Empty;
+                    IllegalMove = false;
+                    RemoveQueen = false;
+                    RemoveQueenIndex = -1;
+                    OpponentQueenCards = updatedGame.QueenCards;
+                    OpponentCards = updatedGame.myCards.CardsDeck;
+                }
+                if (_status.CurrentStatus == GameStatus.Statuses.Play)
+                {
+                    RemoveQueen = false;
+                    RemoveQueenIndex = -1;
+                    if (DeckCards.Count == 56 && myCards.CardsDeck.Count == 5) OpponentCards = updatedGame.myCards.CardsDeck;
+                    UpdateMessage = string.Empty;
+                    IllegalMove = false;
+                }
                 UpdateStatus();
                 if (_status.CurrentStatus == GameStatus.Statuses.Play)
                 {
@@ -154,7 +201,6 @@ namespace SleepingQueensTogether.ModelsLogic
                 MainThread.InvokeOnMainThreadAsync(() =>
                 {
                     Shell.Current.Navigation.PopAsync();
-                    Toast.Make(Strings.GameCanceled, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
                 });
         }
         public override Card TakeCard()
@@ -173,8 +219,12 @@ namespace SleepingQueensTogether.ModelsLogic
 
         public void SelectCard(Card card)
         {
-            if (_status.CurrentStatus == GameStatus.Statuses.Play && myCards.CardsDeck.Count == 5)
-                myCards.SelectCard(card);
+            if (_status.CurrentStatus == GameStatus.Statuses.Play && myCards.CardsDeck.Count == 5 && !CanPickQueen)
+            {
+                if (KnightPlaced && CanClickQueen && card.Type == Strings.dragon) myCards.SelectCard(card);
+                else if (PotionPlaced && CanClickQueen && card.Type == Strings.wand) myCards.SelectCard(card);
+                else if (!KnightPlaced && !PotionPlaced && !CanClickQueen) myCards.SelectCard(card);
+            }
         }
 
         public List<Card> ThrowCard(out string? equation)
@@ -200,10 +250,6 @@ namespace SleepingQueensTogether.ModelsLogic
             return [];
         }
 
-        public bool CanEndTurn()
-        {
-            return _status.CurrentStatus == GameStatus.Statuses.Play && myCards.CardsDeck.Count < 5 && DeckCards.CardsDeck.Count < 66;
-        }
 
         private bool CanThrowCards(out string? equationFinal, out int finalNumber)
         {
@@ -374,6 +420,48 @@ namespace SleepingQueensTogether.ModelsLogic
             {
                 CanPickQueen = true;
             }
+            else if (type == Strings.joker)
+            {
+                int num = random.Next(0, 2);
+                if (num == 0)
+                {
+                    Toast.Make(Strings.JokerYou, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                    UpdateMessage = Strings.JokerOpponent;
+                    CanPickQueen = true;
+                    UpdateFbInGame(OnCompleteUpdate);
+                }
+                else
+                {
+                    Toast.Make(Strings.JokerOpponent, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
+                    UpdateMessage = Strings.JokerYou;
+                    ChangeTurn();
+                    UpdateFbInGame(OnCompleteUpdate);
+                }
+            }
+            else if (type == Strings.knight && OpponentQueenCards.Count > 0)
+            {
+                CanClickQueen = true;
+                for (int i = 0; i < OpponentCards.Count; i++)
+                    if (OpponentCards[i].Type == Strings.dragon)
+                    {
+                        KnightPlaced = true;
+                        ChangeTurn();
+                    }
+            }
+            else if (type == Strings.sleepingpotion && OpponentQueenCards.Count > 0)
+            {
+                CanClickQueen = true;
+                for (int i = 0; i < OpponentCards.Count; i++)
+                    if (OpponentCards[i].Type == Strings.wand)
+                    {
+                        PotionPlaced = true;
+                        ChangeTurn();
+                    }
+            }
+            else if (type == Strings.dragon || type == Strings.wand)
+            {
+                CanClickQueen = false;
+            }
         }
 
         public void TakeQueenCard(int index)
@@ -383,6 +471,10 @@ namespace SleepingQueensTogether.ModelsLogic
             QueensCount++;
             QueenPoints += QueenTableCards[index].QueenValue;
             CanPickQueen = false;
+            if (myCards.CardsDeck.Count == 5)
+            {
+                ChangeTurn();
+            }
         }
     }
 }

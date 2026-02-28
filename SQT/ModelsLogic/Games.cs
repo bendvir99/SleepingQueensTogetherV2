@@ -14,15 +14,7 @@ namespace SleepingQueensTogether.ModelsLogic
             {
                 IsHostUser = true
             };
-            currentGame.GameDeleted += OnGameDeleted;
             currentGame.SetDocument(OnComplete);
-        }
-        protected override void OnGameDeleted(object? sender, EventArgs e)
-        {
-            MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                Toast.Make(Strings.GameCanceled, CommunityToolkit.Maui.Core.ToastDuration.Long, 14).Show();
-            });
         }
         protected override void OnComplete(Task task)
         {

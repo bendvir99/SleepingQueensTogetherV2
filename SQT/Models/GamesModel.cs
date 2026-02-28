@@ -20,7 +20,6 @@ namespace SleepingQueensTogether.Models
         public abstract void RemoveSnapshotListener();
         public abstract void AddSnapshotListener();
         public abstract void AddGame();
-        protected abstract void OnGameDeleted(object? sender, EventArgs e);
         protected abstract void OnComplete(Task task);
         protected abstract void OnChange(IQuerySnapshot snapshot, System.Exception error);
         protected abstract void OnComplete(IQuerySnapshot qs);
