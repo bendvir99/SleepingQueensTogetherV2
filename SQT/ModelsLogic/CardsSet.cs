@@ -1,30 +1,24 @@
 ﻿using SleepingQueensTogether.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SleepingQueensTogether.ModelsLogic
 {
     public class CardsSet : CardsSetModel
     {
-        private readonly Random rnd;
-
+        // במחלקה הזאת מתנהל כל הפעולות של החבילת קלפים וכל מה שאפשר לעשות עם החבילה
+        #region Constructors
         public CardsSet(bool full) : base()
         {
-            rnd = new Random();
+            // הפעולה מקבלת בוליאן האם למלא את החבילה או לא. הפעולה לא מחזירה שום ערך
             if (full)
                 FillPackage();
-
         }
-        public CardsSet() : base()
-        {
-            rnd = new Random();
-        }
+        public CardsSet() : base() { }
+        #endregion
 
+        #region Public Methods
         public override void FillPackage()
         {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 10; j++)
                     CardsDeck.Add(new Card(Strings.number, j + 1));
@@ -41,23 +35,16 @@ namespace SleepingQueensTogether.ModelsLogic
             for (int i = 0; i < 3; i++)
                 CardsDeck.Add(new Card(Strings.wand, -1));
         }
-
-        //public void Reset(bool full)
-        //{
-        //    //cards.Clear();
-        //    //if (full)
-        //    //    FillPakage();
-        //}
-
-        public Card Add(Card card)
+        public override Card Add(Card card)
         {
+            // הפעולה מקבלת קלף והפעולה מחזירה את אותו קלף אחרי שהפעולה הוסיפה אותו לחבילה
             card.Index = CardsDeck.Count;
             CardsDeck.Add(card);
             return card;
         }
-
-        public Card TakeCard()
+        public override Card TakeCard()
         {
+            // הפעולה לא מקבלת שום פרמטרים ומחזירה קלף רנדומלי שנלקח מהחבילה
             Card card = new();
             if (CardsDeck.Count > 0)
             {
@@ -67,9 +54,9 @@ namespace SleepingQueensTogether.ModelsLogic
             }
             return card;
         }
-
-        public void SelectCard(Card card)
+        public override void SelectCard(Card card)
         {
+            // הפעולה מקבלת קלף ולא מחזירה שום ערך
             if (card.IsSelected)
             {
                 SelectedCards.Remove(card);
@@ -81,9 +68,9 @@ namespace SleepingQueensTogether.ModelsLogic
                 card?.ToggleSelected();
             }
         }
-
-        public List<Card> ThrowCard()
+        public override List<Card> ThrowCard()
         {
+            // הפעולה לא מקבלת שום פרמטרים ומחזירה רשימה של כל הקלפים שזרקנו לשולחן
             List<Card> card = [];
             for (int i = 0; i < SelectedCards.Count; i++)
             {
@@ -101,5 +88,6 @@ namespace SleepingQueensTogether.ModelsLogic
             SelectedCards.Clear();
             return card;
         }
+        #endregion
     }
 }

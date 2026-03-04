@@ -4,11 +4,19 @@ using System.Windows.Input;
 
 namespace SleepingQueensTogether.ViewModels
 {
-    internal class RegisterPageVM : ObservableObject
+    public class RegisterPageVM : ObservableObject
     {
+        // המחלקה שעוזרת לדף רישום לפעול בעזרת קישור ללוגיקה
+        #region Fields
         private readonly User user = new();
+        #endregion
+
+        #region ICommands
         public ICommand RegisterCommand { get; }
         public ICommand ToggleIsPasswordCommand { get; }
+        #endregion
+
+        #region Properties
         public bool IsBusy => user.IsBusy;
         public bool IsPassword { get; set; } = true;
         public bool IsRegistered => user.IsRegistered;
@@ -48,20 +56,28 @@ namespace SleepingQueensTogether.ViewModels
                 }
             }
         }
-        private void ToggleIsPassword()
-        {
-            IsPassword = !IsPassword;
-            OnPropertyChanged(nameof(IsPassword));
-        }
+        #endregion
+
+        #region Constructor
         public RegisterPageVM()
         {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
             RegisterCommand = new Command(Register, CanRegister);
             ToggleIsPasswordCommand = new Command(ToggleIsPassword);
             user.OnAuthenticationComplete += OnAuthComplete;
         }
+        #endregion
 
+        #region Private Methods
+        private void ToggleIsPassword()
+        {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
+            IsPassword = !IsPassword;
+            OnPropertyChanged(nameof(IsPassword));
+        }
         private void OnAuthComplete(object? sender, bool success)
         {
+            // הפעולה מקבלת את מי ששלח את האיוונט והאם ההתחברות הצליחה. הפעולה לא מחזירה שום ערך
             OnPropertyChanged(nameof(IsBusy));
             if (success && Application.Current != null)
                 MainThread.InvokeOnMainThreadAsync(() =>
@@ -80,21 +96,22 @@ namespace SleepingQueensTogether.ViewModels
                 OnPropertyChanged(nameof(IsBusy));
             }
         }
-
         private bool CanRegister()
         {
-            return user.IsValidRegister();
+            // הפעולה לא מקבלת שום פרמטרים ומחזירה האם אפשר להירשם
+            return user.IsValidRegister;
         }
 
         private void Register()
         {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
             if (!IsBusy)
             {
                 user.Register();
                 OnPropertyChanged(nameof(IsBusy));
                 (RegisterCommand as Command)?.ChangeCanExecute();
             }
-
         }
+        #endregion
     }
 }

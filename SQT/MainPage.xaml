@@ -9,7 +9,7 @@
     Title="MainPage"
     x:DataType="vm:MainPageVM">
     <Grid>
-        <Image Aspect="AspectFill" Source="sleepingqueens.jpg" />
+        <Image Source="sleepingqueens.jpg" />
 
         <Grid RowDefinitions="Auto, Auto, Auto">
             <Label

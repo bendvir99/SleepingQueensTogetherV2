@@ -10,20 +10,26 @@ namespace SleepingQueensTogether
     [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
     public class MainActivity : MauiAppCompatActivity
     {
+        #region Properties
         MyTimer? mTimer;
+        #endregion
+
+        #region Protected Methods
+
         override protected void OnCreate(Android.OS.Bundle? savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             RegisterTimeMessage();
             StartDeleteFbDocsService();
         }
+        #endregion
 
+        #region Private Methods
         private void StartDeleteFbDocsService()
         {
             Intent intent = new(this, typeof(DeleteFbDocsService));
             StartService(intent);
         }
-
         private void RegisterTimeMessage()
         {
             WeakReferenceMessenger.Default.Register<AppMessage<TimerSettings>>(this, (r, m) =>
@@ -35,7 +41,6 @@ namespace SleepingQueensTogether
                 OnMessageReceived(m.Value);
             });
         }
-
         private void OnMessageReceived(bool value)
         {
             if (value)
@@ -44,11 +49,11 @@ namespace SleepingQueensTogether
                 mTimer = null;
             }
         }
-
         private void OnMessageReceived(TimerSettings value)
         {
             mTimer = new MyTimer(value.TotalTimeInMilliseconds, value.IntervalInMilliseconds);
             mTimer.Start();
         }
+        #endregion
     }
 }

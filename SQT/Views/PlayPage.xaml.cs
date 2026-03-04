@@ -15,7 +15,6 @@ public partial class PlayPage : ContentPage
         base.OnAppearing();
         ppVM.AddSnapshotListener();
     }
-
     protected override void OnDisappearing()
     {
         ppVM.RemoveSnapshotListener();

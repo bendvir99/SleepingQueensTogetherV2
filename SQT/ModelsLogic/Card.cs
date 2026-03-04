@@ -1,64 +1,30 @@
 ﻿using SleepingQueensTogether.Models;
-using Xamarin.Google.Crypto.Tink.Prf;
 
 namespace SleepingQueensTogether.ModelsLogic
 {
     public class Card : CardModel
     {
-      
+        // במחלקה הזאת מתנהל כל הפעולות של הקלף וכל מה שאפשר לעשות עם קלף
+        #region Constructors
         public Card()
         {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
             Type = Strings.empty;
         }
         public Card(string type, int value)
         {
+            // הפעולה מקבלת את סוג הקלף ואת ערכו. הפעולה לא מחזירה שום ערך
             Type = type;
-            Value = value; 
+            Value = value;
             if (type == Strings.queen)
-            {
-                switch (value)
-                {
-                    case 0:
-                        QueenValue = 5;
-                        break;
-                    case 1:
-                        QueenValue = 15;
-                        break;
-                    case 2:
-                        QueenValue = 15;
-                        break;
-                    case 3:
-                        QueenValue = 20;
-                        break;
-                    case 4:
-                        QueenValue = 10;
-                        break;
-                    case 5:
-                        QueenValue = 10;
-                        break;
-                    case 6:
-                        QueenValue = 15;
-                        break;
-                    case 7:
-                        QueenValue = 10;
-                        break;
-                    case 8:
-                        QueenValue = 5;
-                        break;
-                    case 9:
-                        QueenValue = 5;
-                        break;
-                    case 10:
-                        QueenValue = 5;
-                        break;
-                    case 11:
-                        QueenValue = 10;
-                        break;
-                }
-            }
+                QueenValue = new[] { 5, 15, 15, 20, 10, 10, 15, 10, 5, 5, 5, 10 }[value];
         }
+        #endregion
+
+        #region Public Methods
         public override void ToggleSelected()
         {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
             IsSelected = !IsSelected;
             Thickness t = Margin;
             t.Bottom = IsSelected ? Offset : 0;
@@ -66,10 +32,12 @@ namespace SleepingQueensTogether.ModelsLogic
         }
         public static Card Copy(Card card)
         {
+            // הפעולה מקבלת קלף ומחזירה שכפול של אותו קלף
             Card newCard = new();
             if (!card.IsEmpty)
                 newCard = new Card(card.Type, card.Value) { Index = card.Index };
             return newCard;
         }
+        #endregion
     }
 }

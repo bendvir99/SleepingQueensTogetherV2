@@ -2,7 +2,10 @@
 {
     public class TimerSettings(long totalTimeInMilliseconds, long intervalInMilliseconds)
     {
-        public long TotalTimeInMilliseconds { get; set; } = totalTimeInMilliseconds;
-        public long IntervalInMilliseconds { get; set; } = intervalInMilliseconds;
+        // במחלקה זו יש מידע על הטיימר הראשי
+        #region Properties
+        public long TotalTimeInMilliseconds { get; } = totalTimeInMilliseconds;
+        public long IntervalInMilliseconds { get; } = intervalInMilliseconds;
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 {
     internal static class Strings
     {
+        // מחלקת המחזורות
         public const string RegisterTitleText = "Register To Sleeping Queens Together";
         public const string LoginTitleText = "Login To Sleeping Queens Together";
         public const string UsernamePlaceholderText = "Enter Username";
@@ -75,5 +76,8 @@
         public const string YouWon = "You won with ";
         public const string Queens = " queens";
         public const string Points = " points";
+        public const string Plus = " + ";
+        public const string Minus = " - ";
+        public const string EqualsText = " = ";
     }
 }

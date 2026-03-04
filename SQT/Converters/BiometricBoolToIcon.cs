@@ -1,15 +1,11 @@
 ﻿using SleepingQueensTogether.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SleepingQueensTogether.Converters
 {
     internal class BiometricBoolToIcon : IValueConverter
     {
+        #region Public Methods
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             string icon = Icons.Fingerprint_off;
@@ -22,5 +18,6 @@ namespace SleepingQueensTogether.Converters
         {
             return null;
         }
+        #endregion
     }
 }

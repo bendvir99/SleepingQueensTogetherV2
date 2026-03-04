@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Gms.Tasks;
 using Android.OS;
 using Android.Runtime;
 using Plugin.CloudFirestore;
@@ -12,8 +11,13 @@ namespace SleepingQueensTogether.Platforms.Android
     [Service]
     public class DeleteFbDocsService : Service
     {
+        // service class that deleted fb documents after a day
+        #region Fields
         private bool isRunning = true;
         private readonly FbData fbd = new();
+        #endregion
+
+        #region Public Methods
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent? intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
@@ -22,23 +26,6 @@ namespace SleepingQueensTogether.Platforms.Android
             thread.Start();
             return base.OnStartCommand(intent, flags, startId);
         }
-
-        private void DeleteFbDocs()
-        {
-            while (isRunning)
-            {
-                fbd.GetDocumentsWhereLessThan(Keys.GamesCollection, nameof(GameModel.Created), DateTime.Now.AddDays(-1), OnComplete);
-                Thread.Sleep(Keys.OneHourInMilliseconds);
-            }
-            StopSelf();
-        }
-
-        private void OnComplete(IQuerySnapshot qs)
-        {
-            foreach (IDocumentSnapshot doc in qs.Documents)
-                fbd.DeleteDocument(Keys.GamesCollection, doc.Id, (task) => { });
-        }
-
         public override IBinder? OnBind(Intent? intent)
         {
             // Not used
@@ -49,5 +36,23 @@ namespace SleepingQueensTogether.Platforms.Android
             isRunning = false;
             base.OnDestroy();
         }
+        #endregion
+
+        #region Private Methods
+        private void DeleteFbDocs()
+        {
+            while (isRunning)
+            {
+                fbd.GetDocumentsWhereLessThan(Keys.GamesCollection, nameof(GameModel.Created), DateTime.Now.AddDays(-1), OnComplete);
+                Thread.Sleep(Keys.OneHourInMilliseconds);
+            }
+            StopSelf();
+        }
+        private void OnComplete(IQuerySnapshot qs)
+        {
+            foreach (IDocumentSnapshot doc in qs.Documents)
+                fbd.DeleteDocument(Keys.GamesCollection, doc.Id, (task) => { });
+        }
+        #endregion
     }
 }

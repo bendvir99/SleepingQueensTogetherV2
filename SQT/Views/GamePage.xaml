@@ -8,7 +8,7 @@
     Title="GamePage"
     x:DataType="vm:GamePageVM">
     <Grid>
-        <Image Aspect="AspectFill" Source="sleepingqueens.jpg" />
+        <Image Source="sleepingqueens.jpg" />
         <Grid ColumnDefinitions="*" RowDefinitions="*, *, *">
             <Grid ColumnDefinitions="*" RowDefinitions="*, *">
                 <Label
@@ -49,31 +49,26 @@
                     TranslationX="17"
                     TranslationY="-70">
                     <Image
-                        Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
                         Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
-                        Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
                         Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
-                        Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
                         Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
-                        Aspect="AspectFit"
                         HeightRequest="100"
                         HorizontalOptions="Start"
                         Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
                     <Image
-                        Aspect="AspectFit"
                         HeightRequest="100"
                         Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="70" />
@@ -87,8 +82,6 @@
                     TranslationY="25">
                     <ImageButton
                         Padding="0"
-                        Aspect="AspectFit"
-                        BackgroundColor="Transparent"
                         Command="{Binding ClickQueenCardCommand}"
                         CommandParameter="0"
                         HeightRequest="70"
@@ -97,8 +90,6 @@
                         WidthRequest="50" />
                     <ImageButton
                         Padding="0"
-                        Aspect="AspectFit"
-                        BackgroundColor="Transparent"
                         Command="{Binding ClickQueenCardCommand}"
                         CommandParameter="1"
                         HeightRequest="70"
@@ -107,8 +98,6 @@
                         WidthRequest="50" />
                     <ImageButton
                         Padding="0"
-                        Aspect="AspectFit"
-                        BackgroundColor="Transparent"
                         Command="{Binding ClickQueenCardCommand}"
                         CommandParameter="2"
                         HeightRequest="70"
@@ -117,8 +106,6 @@
                         WidthRequest="50" />
                     <ImageButton
                         Padding="0"
-                        Aspect="AspectFit"
-                        BackgroundColor="Transparent"
                         Command="{Binding ClickQueenCardCommand}"
                         CommandParameter="3"
                         HeightRequest="70"
@@ -127,8 +114,6 @@
                         WidthRequest="50" />
                     <ImageButton
                         Padding="0"
-                        Aspect="AspectFit"
-                        BackgroundColor="Transparent"
                         Command="{Binding ClickQueenCardCommand}"
                         CommandParameter="4"
                         HeightRequest="70"
@@ -178,16 +163,9 @@
                     TranslationX="-10"
                     TranslationY="20"
                     WidthRequest="140">
-                    <Image
-                        Aspect="AspectFit"
-                        Source="{x:Static m:Strings.orangecard}"
-                        TranslationY="6" />
-                    <Image
-                        Aspect="AspectFit"
-                        Source="{x:Static m:Strings.orangecard}"
-                        TranslationY="3" />
+                    <Image Source="{x:Static m:Strings.orangecard}" TranslationY="6" />
+                    <Image Source="{x:Static m:Strings.orangecard}" TranslationY="3" />
                     <ImageButton
-                        Aspect="AspectFit"
                         Command="{Binding EndTurnCommand}"
                         Source="{x:Static m:Strings.orangecard}"
                         WidthRequest="50" />
@@ -195,7 +173,6 @@
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="1"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="0"
                     HeightRequest="70"
@@ -205,7 +182,6 @@
                     TranslationY="-10" />
                 <ImageButton
                     Grid.Row="1"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="1"
                     HeightRequest="70"
@@ -216,7 +192,6 @@
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="6"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="6"
                     HeightRequest="70"
@@ -226,7 +201,6 @@
                 <ImageButton
                     Grid.Row="1"
                     Grid.Column="5"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="7"
                     HeightRequest="70"
@@ -236,7 +210,6 @@
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="1"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="2"
                     HeightRequest="70"
@@ -246,7 +219,6 @@
                     TranslationY="20" />
                 <ImageButton
                     Grid.Row="2"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="3"
                     HeightRequest="70"
@@ -257,7 +229,6 @@
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="6"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="8"
                     HeightRequest="70"
@@ -267,7 +238,6 @@
                 <ImageButton
                     Grid.Row="2"
                     Grid.Column="5"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="9"
                     HeightRequest="70"
@@ -277,7 +247,6 @@
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="1"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="4"
                     HeightRequest="70"
@@ -287,7 +256,6 @@
                     TranslationY="50" />
                 <ImageButton
                     Grid.Row="3"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="5"
                     HeightRequest="70"
@@ -298,7 +266,6 @@
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="6"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="10"
                     HeightRequest="70"
@@ -308,7 +275,6 @@
                 <ImageButton
                     Grid.Row="3"
                     Grid.Column="5"
-                    Aspect="AspectFit"
                     Command="{Binding TakeQueenCardCommand}"
                     CommandParameter="11"
                     HeightRequest="70"
@@ -326,29 +292,22 @@
                 TranslationX="17"
                 TranslationY="-55">
                 <Image
-                    Aspect="AspectFit"
                     HeightRequest="70"
                     HorizontalOptions="Start"
                     Source="{Binding QueenCardImages[0]}" />
                 <Image
-                    Aspect="AspectFit"
                     HeightRequest="70"
                     HorizontalOptions="Start"
                     Source="{Binding QueenCardImages[1]}" />
                 <Image
-                    Aspect="AspectFit"
                     HeightRequest="70"
                     HorizontalOptions="Start"
                     Source="{Binding QueenCardImages[2]}" />
                 <Image
-                    Aspect="AspectFit"
                     HeightRequest="70"
                     HorizontalOptions="Start"
                     Source="{Binding QueenCardImages[3]}" />
-                <Image
-                    Aspect="AspectFit"
-                    HeightRequest="70"
-                    Source="{Binding QueenCardImages[4]}" />
+                <Image HeightRequest="70" Source="{Binding QueenCardImages[4]}" />
             </StackLayout>
             <StackLayout
                 x:Name="stkMyCards"

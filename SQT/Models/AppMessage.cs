@@ -2,8 +2,6 @@
 
 namespace SleepingQueensTogether.Models
 {
-    public class AppMessage<T>(T msg) : ValueChangedMessage<T>(msg)
-    {
-
-    }
+    // מחלקה להודעות
+    public class AppMessage<T>(T msg) : ValueChangedMessage<T>(msg) { }
 }

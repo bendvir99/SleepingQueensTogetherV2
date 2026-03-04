@@ -38,8 +38,15 @@
         TargetType="Button">
         <Setter Property="BorderColor" Value="{AppThemeBinding Dark=White, Light=Black}" />
     </Style>
+    <Style TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFill" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
     <Style TargetType="ImageButton">
         <Setter Property="Opacity" Value="1" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Aspect" Value="AspectFill" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup Name="CommonStates">

@@ -2,6 +2,7 @@
 {
     internal static class Keys
     {
+        // מחלקת המפתחות הסודיים
         public const string UsernameKey = "username";
         public const string GmailKey = "gmail";
         public const string PasswordKey = "password";

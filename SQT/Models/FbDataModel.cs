@@ -6,10 +6,33 @@ namespace SleepingQueensTogether.Models
 {
     public abstract class FbDataModel
     {
+        // מחלקת המודל של הפיירבייס
+        #region Fields
         protected FirebaseAuthClient facl;
         protected IFirestore fdb;
+        #endregion
+
+        #region Properties
         public string DisplayName => facl != null && facl.User != null ? facl.User.Info.DisplayName : string.Empty;
         public string UserId => facl != null ? facl.User.Uid : string.Empty;
+        #endregion
+
+        #region Constructor
+        public FbDataModel()
+        {
+            // הפעולה לא מקבלת שום פרמטרים ולא מחזירה שום ערך
+            FirebaseAuthConfig fac = new()
+            {
+                ApiKey = Keys.JsonApiKey,
+                AuthDomain = Keys.JsonApiAuthDomainKey,
+                Providers = [new EmailProvider()]
+            };
+            facl = new FirebaseAuthClient(fac);
+            fdb = CrossCloudFirestore.Current.Instance;
+        }
+        #endregion
+
+        #region Public Methods
         public abstract void CreateUserWithEmailAndPasswordAsync(string email, string password, string name, Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void SignInWithEmailAndPasswordAsync(string email, string password, Action<System.Threading.Tasks.Task> OnComplete);
         public abstract void ResetPasswordWithEmail(string email, Action<System.Threading.Tasks.Task> OnComplete);
@@ -21,17 +44,6 @@ namespace SleepingQueensTogether.Models
         public abstract void GetDocumentsWhereLessThan(string collectonName, string fName, object fValue, Action<IQuerySnapshot> OnComplete);
         public abstract IListenerRegistration AddSnapshotListener(string collectonName, Plugin.CloudFirestore.QuerySnapshotHandler OnChange);
         public abstract IListenerRegistration AddSnapshotListener(string collectonName, string id, Plugin.CloudFirestore.DocumentSnapshotHandler OnChange);
-
-        public FbDataModel()
-        {
-            FirebaseAuthConfig fac = new()
-            {
-                ApiKey = Keys.JsonApiKey,
-                AuthDomain = Keys.JsonApiAuthDomainKey,
-                Providers = [new EmailProvider()]
-            };
-            facl = new FirebaseAuthClient(fac);
-            fdb = CrossCloudFirestore.Current.Instance;
-        }
+        #endregion
     }
 }

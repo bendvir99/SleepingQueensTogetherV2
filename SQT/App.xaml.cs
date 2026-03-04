@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.ApplicationModel;
-using SleepingQueensTogether.ModelsLogic;
+﻿using SleepingQueensTogether.ModelsLogic;
 using SleepingQueensTogether.Views;
 
 namespace SleepingQueensTogether

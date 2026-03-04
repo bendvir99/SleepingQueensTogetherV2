@@ -5,7 +5,7 @@ namespace SleepingQueensTogether.Converters
 {
 	internal class VisibilityBoolToIcon : IValueConverter
 	{
-
+        #region Public Methods
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 		{
 			string icon = Icons.Visibility_off;
@@ -18,5 +18,6 @@ namespace SleepingQueensTogether.Converters
         {
             return null;
         }
+        #endregion
     }
 }

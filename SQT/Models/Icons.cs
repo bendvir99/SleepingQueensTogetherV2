@@ -2,6 +2,7 @@
 {
     internal static class Icons
     {
+        // מחלקת האייקונים
         public const string Delete = "\ue872";
         public const string Restore_from_trash = "\ue938";
         public const string Delete_forever = "\ue92b";
