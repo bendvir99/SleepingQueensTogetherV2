@@ -79,5 +79,17 @@
         public const string Plus = " + ";
         public const string Minus = " - ";
         public const string EqualsText = " = ";
+        public const string RulesTitle = "Sleeping Queens Rules";
+        public const string RulesGoal = "Goal:";
+        public const string RulesObjective = "The object of the game is to be the first player to: Collect 5 queens or have 50 points.";
+        public const string RulesHow = "How to Play:";
+        public const string RulesKing = "Play a King to awaken a Sleeping Queen from the center playing area. It is now awake";
+        public const string RulesKnight = "Play a Knight to steal any one of your opponent's awakened queens.";
+        public const string RulesDragon = "Your opponent can stop your knight by immediately playing a Dragon card from their hand.";
+        public const string RulesPotion = "Play a Sleeping Potion card to put any one of your opponent's awakened queens back to sleep.";
+        public const string RulesWand = "Your opponent can defend against a sleeping potion by immediately playing a Wand card from their hand.";
+        public const string RulesJester = "Play a Jester card and take a chance! Chooses a random player to keep a queen from the center!";
+        public const string RulesDiscard = "Discard a single card of any kind, or, Discard multiple identical number cards, or, Discard three or more number cards that make an addition equation. For example: If you have numbers 2, 3 and 5, you can discard all three cards since 2 + 3 = 5. Or if you have a 2, 3, 4, and a 9 you could discard them all because 9 - 4 - 3 = 2";
+        public const string RulesDraw = "If the draw pile runs out the game ends in a draw.";
     }
 }

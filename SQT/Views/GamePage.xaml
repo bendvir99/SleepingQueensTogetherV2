@@ -163,8 +163,8 @@
                     TranslationX="-10"
                     TranslationY="20"
                     WidthRequest="140">
-                    <Image Source="{x:Static m:Strings.orangecard}" TranslationY="6" />
-                    <Image Source="{x:Static m:Strings.orangecard}" TranslationY="3" />
+                    <Image Source="{x:Static m:Strings.orangecard}" TranslationY="6" WidthRequest="50"/>
+                    <Image Source="{x:Static m:Strings.orangecard}" TranslationY="3" WidthRequest="50" />
                     <ImageButton
                         Command="{Binding EndTurnCommand}"
                         Source="{x:Static m:Strings.orangecard}"

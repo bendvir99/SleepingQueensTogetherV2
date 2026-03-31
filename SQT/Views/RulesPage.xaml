@@ -3,6 +3,40 @@
     x:Class="SleepingQueensTogether.Views.RulesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="RulesPage" >
-    <Label Text="The main objective of the game is be the first player to reach 5 queens or 50 points. After you use a king card pick a queen from the table to awaken it and take it to yourself. Some queens are special: the rose queens grants you another free queen from the table while the dog queen and cat queen cant be held together by the same player, if you get one while you have the other, one of them will be put back to sleep. "/>
+    xmlns:m="clr-namespace:SleepingQueensTogether.Models"
+    xmlns:vm="clr-namespace:SleepingQueensTogether.ViewModels"
+    x:DataType="vm:RulesPageVM"
+    Title="RulesPage">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label
+                FontAttributes="Bold"
+                FontSize="24"
+                HorizontalOptions="Center"
+                Text="{x:Static m:Strings.RulesTitle}" />
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="{x:Static m:Strings.RulesGoal}" />
+
+            <Label Text="{x:Static m:Strings.RulesObjective}" />
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="18"
+                Text="{x:Static m:Strings.RulesHow}" />
+
+            <Label Text="{x:Static m:Strings.RulesKing}" />
+            <Label Text="{x:Static m:Strings.RulesKnight}" />
+            <Label Text="{x:Static m:Strings.RulesDragon}" />
+            <Label Text="{x:Static m:Strings.RulesPotion}" />
+            <Label Text="{x:Static m:Strings.RulesWand}" />
+            <Label Text="{x:Static m:Strings.RulesJester}" />
+            <Label Text="{x:Static m:Strings.RulesDiscard}" />
+            <Label Text="{x:Static m:Strings.RulesDraw}" />
+
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

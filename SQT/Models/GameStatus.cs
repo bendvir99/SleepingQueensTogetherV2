@@ -7,7 +7,6 @@
         public enum Statuses { Wait, Play }
         #endregion
 
-
         #region Fields
         private readonly string[] msgs = [Strings.WaitMessage, Strings.PlayMessage];
         #endregion

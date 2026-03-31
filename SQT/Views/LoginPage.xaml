@@ -94,7 +94,6 @@
             FontSize="80"
             Text="{Binding CanPressBiometric, Converter={StaticResource biometricIconConvert}}"
             WidthRequest="100" />
-
     </Grid>
 
 

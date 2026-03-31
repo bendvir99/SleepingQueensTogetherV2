@@ -1,10 +1,11 @@
-﻿using SleepingQueensTogether.ModelsLogic;
+﻿using SleepingQueensTogether.Models;
+using SleepingQueensTogether.ModelsLogic;
 using SleepingQueensTogether.Views;
 using System.Windows.Input;
 
 namespace SleepingQueensTogether.ViewModels
 {
-    public class PasswordResetPageVM
+    public class PasswordResetPageVM : ObservableObject
     {
         // המחלקה שעוזרת לדף של השינוי סיסמה לפעול
         #region Fields
